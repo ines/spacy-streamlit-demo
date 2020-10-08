@@ -11,5 +11,7 @@ spacy_streamlit.visualize(
     DEFAULT_TEXT,
     visualizers=["parser", "ner", "similarity", "tokens"],
     show_visualizer_select=True,
+    # TODO: enable when morph issue is fixed in next nightly
+    show_json_doc=False,
     sidebar_description=DESCRIPTION
 )
