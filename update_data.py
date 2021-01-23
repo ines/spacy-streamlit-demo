@@ -13,12 +13,12 @@ URL_TEMPLATE = "https://github.com/explosion/spacy-models/releases/download/{nam
 
 def main(
     # fmt: off
-    spacy_version: str = typer.Argument(">=3.0.0rc1,<3.1.0", help="The spaCy version range"),
+    spacy_version: str = typer.Argument(">=3.0.0rc3,<3.1.0", help="The spaCy version range"),
     spacy_streamlit_version: str = typer.Argument(">=1.0.0rc0,<1.1.0", help="The version range of spacy-streamlit"),
     req_path: Path = typer.Option(Path(__file__).parent / "requirements.txt", "--requirements-path", "-rp", help="Path to requirements.txt"),
     desc_path: Path = typer.Option(Path(__file__).parent / "models.json", "--models-json-path", "-mp", help="Path to models.json with model details for dropdown"),
     package: str = typer.Option("spacy-nightly", "--package", "-p", help="The parent package (spacy, spacy-nightly, etc.)"),
-    exclude: str = typer.Option("en_vectors_web_lg,xx_ent_wiki_sm", "--exclude", "-e", help="Comma-separated model names to exclude"),
+    exclude: str = typer.Option("", "--exclude", "-e", help="Comma-separated model names to exclude"),
     # fmt: on
 ):
     exclude = [name.strip() for name in exclude.split(",")]
