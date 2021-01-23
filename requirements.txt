@@ -54,7 +54,6 @@ https://github.com/explosion/spacy-models/releases/download/es_core_news_lg-3.0.
 https://github.com/explosion/spacy-models/releases/download/es_dep_news_trf-3.0.0a1/es_dep_news_trf-3.0.0a1.tar.gz#egg=es_dep_news_trf==3.0.0a1
 https://github.com/explosion/spacy-models/releases/download/xx_ent_wiki_sm-3.0.0a1/xx_ent_wiki_sm-3.0.0a1.tar.gz#egg=xx_ent_wiki_sm==3.0.0a1
 https://github.com/explosion/spacy-models/releases/download/xx_sent_ud_sm-3.0.0a1/xx_sent_ud_sm-3.0.0a1.tar.gz#egg=xx_sent_ud_sm==3.0.0a1
-https://github.com/explosion/spacy-models/releases/download/en_vectors_web_lg-3.0.0a1/en_vectors_web_lg-3.0.0a1.tar.gz#egg=en_vectors_web_lg==3.0.0a1
 https://github.com/explosion/spacy-models/releases/download/ru_core_news_sm-3.0.0a1/ru_core_news_sm-3.0.0a1.tar.gz#egg=ru_core_news_sm==3.0.0a1
 https://github.com/explosion/spacy-models/releases/download/ru_core_news_md-3.0.0a1/ru_core_news_md-3.0.0a1.tar.gz#egg=ru_core_news_md==3.0.0a1
 https://github.com/explosion/spacy-models/releases/download/ru_core_news_lg-3.0.0a1/ru_core_news_lg-3.0.0a1.tar.gz#egg=ru_core_news_lg==3.0.0a1

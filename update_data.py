@@ -18,7 +18,7 @@ def main(
     req_path: Path = typer.Option(Path(__file__).parent / "requirements.txt", "--requirements-path", "-rp", help="Path to requirements.txt"),
     desc_path: Path = typer.Option(Path(__file__).parent / "models.json", "--models-json-path", "-mp", help="Path to models.json with model details for dropdown"),
     package: str = typer.Option("spacy-nightly", "--package", "-p", help="The parent package (spacy, spacy-nightly, etc.)"),
-    exclude: str = typer.Option("", "--exclude", "-e", help="Comma-separated model names to exclude"),
+    exclude: str = typer.Option("en_vectors_web_lg", "--exclude", "-e", help="Comma-separated model names to exclude"),
     # fmt: on
 ):
     exclude = [name.strip() for name in exclude.split(",")]
