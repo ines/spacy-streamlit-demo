@@ -44,6 +44,9 @@ def main(
             lang = model_name.split("_", 1)[0]
             lang_name = get_lang_class(lang).__name__
             models[model_name] = f"{lang_name} ({model_name})"
+    # Sort by human-readable language name, then by model size
+    sort_key = lambda x: f"{x[1].split(' ')[0]}_{['sm', 'md', 'lg', 'trf'].index(x[0].split('_')[-1])}"
+    models = {name: desc for name, desc in sorted(models.items(), key=sort_key)}
     with Path(req_path).open("w", encoding="utf8") as f:
         f.write("\n".join(reqs))
     srsly.write_json(desc_path, models)
