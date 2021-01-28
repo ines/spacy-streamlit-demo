@@ -40,7 +40,13 @@ def main(
     models = {}
     for model_name, model_versions in data.items():
         if model_name not in exclude and model_versions:
-            reqs.append(URL_TEMPLATE.format(name=model_name, version=model_versions[0]))
+            url = URL_TEMPLATE.format(name=model_name, version=model_versions[0])
+            # We do a quick check if the URL exists
+            r = requests.get(url, headers={"Range": "bytes=0"})
+            if r.status_code == 404:
+                print(f"Invalid package URL (skipping): {url}")
+                continue
+            reqs.append(url)
             lang = model_name.split("_", 1)[0]
             lang_name = get_lang_class(lang).__name__
             models[model_name] = f"{lang_name} ({model_name})"

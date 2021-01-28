@@ -11,7 +11,6 @@ https://github.com/explosion/spacy-models/releases/download/da_core_news_lg-3.0.
 https://github.com/explosion/spacy-models/releases/download/nl_core_news_sm-3.0.0a1/nl_core_news_sm-3.0.0a1.tar.gz#egg=nl_core_news_sm==3.0.0a1
 https://github.com/explosion/spacy-models/releases/download/nl_core_news_md-3.0.0a1/nl_core_news_md-3.0.0a1.tar.gz#egg=nl_core_news_md==3.0.0a1
 https://github.com/explosion/spacy-models/releases/download/nl_core_news_lg-3.0.0a1/nl_core_news_lg-3.0.0a1.tar.gz#egg=nl_core_news_lg==3.0.0a1
-https://github.com/explosion/spacy-models/releases/download/nl_core_news_trf-3.0.0a1/nl_core_news_trf-3.0.0a1.tar.gz#egg=nl_core_news_trf==3.0.0a1
 https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.0.0a1/en_core_web_sm-3.0.0a1.tar.gz#egg=en_core_web_sm==3.0.0a1
 https://github.com/explosion/spacy-models/releases/download/en_core_web_md-3.0.0a1/en_core_web_md-3.0.0a1.tar.gz#egg=en_core_web_md==3.0.0a1
 https://github.com/explosion/spacy-models/releases/download/en_core_web_lg-3.0.0a1/en_core_web_lg-3.0.0a1.tar.gz#egg=en_core_web_lg==3.0.0a1
