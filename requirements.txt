@@ -8,9 +8,7 @@ https://github.com/explosion/spacy-models/releases/download/nl_core_news_sm-3.0.
 https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.0.0/en_core_web_sm-3.0.0-py3-none-any.whl#egg=en_core_web_sm==3.0.0
 https://github.com/explosion/spacy-models/releases/download/en_core_web_trf-3.0.0/en_core_web_trf-3.0.0-py3-none-any.whl#egg=en_core_web_trf==3.0.0
 https://github.com/explosion/spacy-models/releases/download/fr_core_news_sm-3.0.0/fr_core_news_sm-3.0.0-py3-none-any.whl#egg=fr_core_news_sm==3.0.0
-https://github.com/explosion/spacy-models/releases/download/fr_dep_news_trf-3.0.0/fr_dep_news_trf-3.0.0-py3-none-any.whl#egg=fr_dep_news_trf==3.0.0
 https://github.com/explosion/spacy-models/releases/download/de_core_news_sm-3.0.0/de_core_news_sm-3.0.0-py3-none-any.whl#egg=de_core_news_sm==3.0.0
-https://github.com/explosion/spacy-models/releases/download/de_dep_news_trf-3.0.0/de_dep_news_trf-3.0.0-py3-none-any.whl#egg=de_dep_news_trf==3.0.0
 https://github.com/explosion/spacy-models/releases/download/el_core_news_sm-3.0.0/el_core_news_sm-3.0.0-py3-none-any.whl#egg=el_core_news_sm==3.0.0
 https://github.com/explosion/spacy-models/releases/download/it_core_news_sm-3.0.0/it_core_news_sm-3.0.0-py3-none-any.whl#egg=it_core_news_sm==3.0.0
 https://github.com/explosion/spacy-models/releases/download/ja_core_news_sm-3.0.0/ja_core_news_sm-3.0.0-py3-none-any.whl#egg=ja_core_news_sm==3.0.0
@@ -20,8 +18,5 @@ https://github.com/explosion/spacy-models/releases/download/pl_core_news_sm-3.0.
 https://github.com/explosion/spacy-models/releases/download/pt_core_news_sm-3.0.0/pt_core_news_sm-3.0.0-py3-none-any.whl#egg=pt_core_news_sm==3.0.0
 https://github.com/explosion/spacy-models/releases/download/ro_core_news_sm-3.0.0/ro_core_news_sm-3.0.0-py3-none-any.whl#egg=ro_core_news_sm==3.0.0
 https://github.com/explosion/spacy-models/releases/download/es_core_news_sm-3.0.0/es_core_news_sm-3.0.0-py3-none-any.whl#egg=es_core_news_sm==3.0.0
-https://github.com/explosion/spacy-models/releases/download/es_dep_news_trf-3.0.0/es_dep_news_trf-3.0.0-py3-none-any.whl#egg=es_dep_news_trf==3.0.0
-https://github.com/explosion/spacy-models/releases/download/xx_ent_wiki_sm-3.0.0/xx_ent_wiki_sm-3.0.0-py3-none-any.whl#egg=xx_ent_wiki_sm==3.0.0
-https://github.com/explosion/spacy-models/releases/download/xx_sent_ud_sm-3.0.0/xx_sent_ud_sm-3.0.0-py3-none-any.whl#egg=xx_sent_ud_sm==3.0.0
 https://github.com/explosion/spacy-models/releases/download/ru_core_news_sm-3.0.0/ru_core_news_sm-3.0.0-py3-none-any.whl#egg=ru_core_news_sm==3.0.0
 https://github.com/explosion/spacy-models/releases/download/mk_core_news_sm-3.0.0/mk_core_news_sm-3.0.0-py3-none-any.whl#egg=mk_core_news_sm==3.0.0

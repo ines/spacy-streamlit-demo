@@ -6,16 +6,12 @@
   "en_core_web_sm":"English (en_core_web_sm)",
   "en_core_web_trf":"English (en_core_web_trf)",
   "fr_core_news_sm":"French (fr_core_news_sm)",
-  "fr_dep_news_trf":"French (fr_dep_news_trf)",
   "de_core_news_sm":"German (de_core_news_sm)",
-  "de_dep_news_trf":"German (de_dep_news_trf)",
   "el_core_news_sm":"Greek (el_core_news_sm)",
   "it_core_news_sm":"Italian (it_core_news_sm)",
   "ja_core_news_sm":"Japanese (ja_core_news_sm)",
   "lt_core_news_sm":"Lithuanian (lt_core_news_sm)",
   "mk_core_news_sm":"Macedonian (mk_core_news_sm)",
-  "xx_ent_wiki_sm":"MultiLanguage (xx_ent_wiki_sm)",
-  "xx_sent_ud_sm":"MultiLanguage (xx_sent_ud_sm)",
   "nb_core_news_sm":"Norwegian (nb_core_news_sm)",
   "pl_core_news_sm":"Polish (pl_core_news_sm)",
   "pl_core_news_md":"Polish (pl_core_news_md)",
@@ -24,5 +20,4 @@
   "ro_core_news_sm":"Romanian (ro_core_news_sm)",
   "ru_core_news_sm":"Russian (ru_core_news_sm)",
   "es_core_news_sm":"Spanish (es_core_news_sm)",
-  "es_dep_news_trf":"Spanish (es_dep_news_trf)"
 }
