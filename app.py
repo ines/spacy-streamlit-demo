@@ -4,7 +4,7 @@ from spacy.matcher import Matcher
 import streamlit as st
 
 # Global setting
-MODELS = ["zh_core_web_trf", "zh_core_web_sm"]
+MODELS = ["zh_core_web_sm", "en_core_web_sm", "ja_core_news_sm"]
 DEFAULT_TEXT = "當我正想著我到底有沒有見過孔子的時候，孔子就出現了！"
 DEFAULT_REGEX = "[過了著]"
 DESCRIPTION = "spaCy自然語言處理模型展示"
@@ -16,7 +16,7 @@ st.set_page_config(
 )
 
 # Model
-selected_model = st.radio(f"{MODELS[0]}為Transformer模型，正確率較高", MODELS)
+selected_model = st.radio(f"{MODELS[0]}為中文模型，{MODELS[1]}為英文模型，{MODELS[2]}為日文模型", MODELS)
 nlp = spacy.load(selected_model)
 nlp.add_pipe("merge_entities") 
 st.markdown("---")
