@@ -8,9 +8,9 @@ MODELS = {"中文": "zh_core_web_sm",
           "English": "en_core_web_sm", 
           "日本語": "ja_core_news_sm"}
 models_to_display = list(MODELS.keys())
-ZH_TEXT = "當我正想著我到底有沒有見過孔子的時候，孔子就出現了！"
+ZH_TEXT = "（中央社）NCC今天公布110年智慧型手機軟體資安抽測結果，下半年抽測10款不同廠牌智慧型手機，初測僅有iPhone 12通過，其餘9款未通過，已請手機製造商改善，以保障消費者權益。"
 ZH_REGEX = "[過了著]"
-EN_TEXT = "As I was wondering whether I'd seen Socrates, he showed up right in front of me!"
+EN_TEXT = "(CNN) President Joe Biden on Thursday marked the first anniversary of the January 6 insurrection by forcefully calling out former President Donald Trump for attempting to undo American democracy, saying such an insurrection must never happen again."
 EN_REGEX = "(ed|ing)$"
 DESCRIPTION = "spaCy自然語言處理模型展示"
 
