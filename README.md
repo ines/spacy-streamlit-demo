@@ -1,1 +1,1 @@
-This is a Streamlit app leveraging the power of spaCy to do information extraction. 
+This repo hosts a [Streamlit](https://streamlit.io/) app that leverages the power of [spaCy](https://spacy.io/) to do information extraction. 
