@@ -41,16 +41,6 @@ user_text = st.text_area("請輸入文章：", default_text)
 doc = nlp(user_text)
 st.markdown("---")
 
-# Two columns
-left, right = st.columns(2)
-
-with left:
-    # Visualization
-    ner_labels = nlp.get_pipe("ner").labels
-    visualize_ner(doc, labels=ner_labels, show_table=False, title="命名實體")
-    visualize_tokens(doc, attrs=["text", "pos_", "dep_", "ent_type_"], title="斷詞特徵")
-    st.markdown("---")
-
 # Pattern input
 def show_one_token_attr(tok_num):
     pattern_types = ["正則表達", "命名實體"]
@@ -62,6 +52,16 @@ def show_one_token_attr(tok_num):
         ner_text = st.selectbox("請選擇命名實體類別：", ner_labels, key="ner_"+str(tok_num))
         pattern = [{'ENT_TYPE': ner_text}]
     return pattern 
+
+# Two columns
+left, right = st.columns(2)
+
+with left:
+    # Visualization
+    ner_labels = nlp.get_pipe("ner").labels
+    visualize_ner(doc, labels=ner_labels, show_table=False, title="命名實體")
+    visualize_tokens(doc, attrs=["text", "pos_", "dep_", "ent_type_"], title="斷詞特徵")
+    st.markdown("---")
 
 with right:
     # Num of tokens 
@@ -84,10 +84,10 @@ with right:
         st.markdown("## 規則匹配結果：")
         for span in matches:
             text = span.text
-            left_tokens = span.lefts
-            left_chunks = [t.txt for t in left_tokens]
-            right_tokens = span.rights
-            right_chunks = [t.txt for t in right_tokens]
-            st.markdown(f"{left_chunks} *{text}* {right_chunks}")
+            #left_tokens = span.lefts
+            #left_chunks = [t.txt for t in left_tokens]
+            #right_tokens = span.rights
+            #right_chunks = [t.txt for t in right_tokens]
+            st.markdown(f"### {text}")
     else:
         st.markdownn("## 沒有任何匹配結果！")
