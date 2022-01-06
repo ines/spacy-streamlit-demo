@@ -56,7 +56,7 @@ def show_one_token_attr(tok_num):
     pattern_types = ["正則表達", "命名實體"]
     selected_info = st.radio("請選擇匹配方式：", pattern_types, key="info_"+str(tok_num))
     if selected_info == pattern_types[0]:
-        regex_text = st.text_input("請輸入正則表達：", DEFAULT_REGEX, key="regex_"+str(tok_num))
+        regex_text = st.text_input("請輸入正則表達：", default_regex, key="regex_"+str(tok_num))
         pattern = [{'TEXT': {'REGEX': regex_text}}]
     elif selected_info == pattern_types[1]:
         ner_text = st.selectbox("請選擇命名實體類別：", ner_labels, key="ner_"+str(tok_num))
