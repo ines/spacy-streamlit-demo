@@ -10,6 +10,8 @@ MODELS = {"中文": "zh_core_web_sm",
 models_to_display = list(MODELS.keys())
 ZH_TEXT = "當我正想著我到底有沒有見過孔子的時候，孔子就出現了！"
 ZH_REGEX = "[過了著]"
+EN_TEXT = "As I was wondering whether I'd seen Socrates, he showed up right in front of me!"
+EN_REGEX = "(ed|ing)$"
 DESCRIPTION = "spaCy自然語言處理模型展示"
 
 st.set_page_config(
@@ -31,8 +33,8 @@ if selected_model == models_to_display[0]:
     default_text = ZH_TEXT
     default_regex = ZH_REGEX
 elif selected_model == models_to_display[1]:
-    default_text = ZH_TEXT # to be replaced
-    default_regex = ZH_REGEX # to be replaced
+    default_text = EN_TEXT 
+    default_regex = EN_REGEX 
 elif selected_model == models_to_display[2]:
     default_text = ZH_TEXT # to be replaced
     default_regex = ZH_REGEX # to be replaced 
