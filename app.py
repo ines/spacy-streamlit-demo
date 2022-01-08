@@ -89,9 +89,9 @@ with right:
         for span in matches:
             text = span.text
             left_toks = span.lefts
-            left_texts = [t.txt for t in left_toks]
+            left_texts = [t.text for t in left_toks]
             right_toks = span.rights
-            right_texts = [t.txt for t in right_toks]
+            right_texts = [t.text for t in right_toks]
             st.markdown(f"### {left_texts} {text} {right_texts}")
     else:
         st.markdown("## 沒有任何匹配結果！")
