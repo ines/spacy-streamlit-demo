@@ -4,9 +4,9 @@ from spacy.matcher import Matcher
 import streamlit as st
 
 # Global setting
-MODELS = {"中文": "zh_core_web_sm", 
-          "English": "en_core_web_sm", 
-          "日本語": "ja_core_news_sm"}
+MODELS = {"中文(zh_core_web_sm)": "zh_core_web_sm", 
+          "English(en_core_web_sm)": "en_core_web_sm", 
+          "日本語(ja_core_news_sm)": "ja_core_news_sm"}
 models_to_display = list(MODELS.keys())
 ZH_TEXT = "（中央社）中亞國家哈薩克近日發生民眾示威暴動，引發政府切斷網路，連帶造成比特幣價格重挫，摜破4萬3000美元關卡。這也凸顯加密貨幣挖礦大國哈薩克在比特幣生態圈分量舉足輕重。"
 ZH_REGEX = "\d{2,4}"
@@ -61,24 +61,24 @@ def show_one_token_attr(tok_num):
 left, right = st.columns(2)
 
 with left:
-    # Visualization
+    # Model output
     ner_labels = nlp.get_pipe("ner").labels
     visualize_ner(doc, labels=ner_labels, show_table=False, title="命名實體")
     visualize_tokens(doc, attrs=["text", "pos_", "dep_", "ent_type_"], title="斷詞特徵")
     st.markdown("---")
 
 with right:
-    # Num of tokens 
+    # Select num of tokens 
     selected_tok_nums = st.number_input("請選擇斷詞數量：", 1, 5, 2)
     st.markdown("---")
 
-    # Selected patterns
+    # Select patterns
     patterns = []
     for tok_num in range(selected_tok_nums):
         pattern = show_one_token_attr(tok_num)
         patterns += pattern
     
-    # Matches
+    # Match the text with the selected patterns
     matcher = Matcher(nlp.vocab)
     matcher.add('Rule', [patterns])
     matches = matcher(doc, as_spans=True)
@@ -88,10 +88,10 @@ with right:
         st.markdown("## 規則匹配結果：")
         for span in matches:
             text = span.text
-            #left_tokens = span.lefts
-            #left_chunks = [t.txt for t in left_tokens]
-            #right_tokens = span.rights
-            #right_chunks = [t.txt for t in right_tokens]
-            st.markdown(f"### {text}")
+            left_toks = span.lefts
+            left_texts = [t.txt for t in left_toks]
+            right_toks = span.rights
+            right_texts = [t.txt for t in right_toks]
+            st.markdown(f"### {left_texts} {text} {right_texts}")
     else:
         st.markdown("## 沒有任何匹配結果！")
