@@ -8,10 +8,12 @@ MODELS = {"中文": "zh_core_web_sm",
           "English": "en_core_web_sm", 
           "日本語": "ja_core_news_sm"}
 models_to_display = list(MODELS.keys())
-ZH_TEXT = "（中央社）NCC今天公布110年智慧型手機軟體資安抽測結果，下半年抽測10款不同廠牌智慧型手機，初測僅有iPhone 12通過，其餘9款未通過，已請手機製造商改善，以保障消費者權益。"
-ZH_REGEX = "[過了著]"
+ZH_TEXT = "（中央社）中亞國家哈薩克近日發生民眾示威暴動，引發政府切斷網路，連帶造成比特幣價格重挫，摜破4萬3000美元關卡。這也凸顯加密貨幣挖礦大國哈薩克在比特幣生態圈分量舉足輕重。"
+ZH_REGEX = "\d{2,4}"
 EN_TEXT = "(CNN) President Joe Biden on Thursday marked the first anniversary of the January 6 insurrection by forcefully calling out former President Donald Trump for attempting to undo American democracy, saying such an insurrection must never happen again."
-EN_REGEX = "(ed|ing)$"
+EN_REGEX = "(ed|ing)"
+JA_TEXT = "（朝日新聞）紙の教科書をデータ化した「デジタル教科書」が新年度から、全小中学校に無償で提供される。文部科学省が、2024年度の本格導入に向けた実証事業として外国語（英語）で配布し、希望する学校の一部には、ほかの教科からも1教科分を提供する。紙との併存や費用のあり方などについて課題を洗い出す。"
+JA_REGEX = "[がでに]"
 DESCRIPTION = "spaCy自然語言處理模型展示"
 
 st.set_page_config(
@@ -36,8 +38,8 @@ elif selected_model == models_to_display[1]:
     default_text = EN_TEXT 
     default_regex = EN_REGEX 
 elif selected_model == models_to_display[2]:
-    default_text = ZH_TEXT # to be replaced
-    default_regex = ZH_REGEX # to be replaced 
+    default_text = JA_TEXT
+    default_regex = JA_REGEX 
 
 user_text = st.text_area("請輸入文章：", default_text)
 doc = nlp(user_text)
@@ -92,4 +94,4 @@ with right:
             #right_chunks = [t.txt for t in right_tokens]
             st.markdown(f"### {text}")
     else:
-        st.markdownn("## 沒有任何匹配結果！")
+        st.markdown("## 沒有任何匹配結果！")
