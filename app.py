@@ -8,11 +8,10 @@ MODELS = {"中文(zh_core_web_sm)": "zh_core_web_sm",
           "English(en_core_web_sm)": "en_core_web_sm", 
           "日本語(ja_core_news_sm)": "ja_core_news_sm"}
 models_to_display = list(MODELS.keys())
-ZH_TEXT = "（中央社）中亞國家哈薩克近日發生民眾示威暴動，引發政府切斷網路，連帶造成比特幣價格重挫，摜破4萬3000美元關卡。這也凸顯加密貨幣挖礦大國哈薩克在比特幣生態圈分量舉足輕重。"
+ZH_TEXT = "（中央社）中央流行疫情指揮中心宣布，今天國內新增60例COVID-19（2019冠狀病毒疾病），分別為49例境外移入，11例本土病例，是去年8月29日本土新增13例以來的新高，初步研判其中10例個案皆與桃園機場疫情有關。"
 ZH_REGEX = "\d{2,4}"
-EN_TEXT = "(CNN) President Joe Biden on Thursday marked the first anniversary of the January 6 insurrection by forcefully calling out former President Donald Trump for attempting to undo American democracy, saying such an insurrection must never happen again."
-EN_REGEX = "(ed|ing)"
-JA_TEXT = "（朝日新聞）紙の教科書をデータ化した「デジタル教科書」が新年度から、全小中学校に無償で提供される。文部科学省が、2024年度の本格導入に向けた実証事業として外国語（英語）で配布し、希望する学校の一部には、ほかの教科からも1教科分を提供する。紙との併存や費用のあり方などについて課題を洗い出す。"
+EN_TEXT = "(CNN) Covid-19 hospitalization rates among children are soaring in the United States, with an average of 4.3 children under 5 per 100,000 hospitalized with an infection as of the week ending January 1, up from 2.6 children the previous week, according to data from the US Centers for Disease Control and Prevention. This represents a 48% increase from the week ending December 4, and the largest increase in hospitalization rate this age group has seen over the course of the pandemic."
+JA_TEXT = "（朝日新聞）新型コロナウイルスの国内感染者は9日、新たに8249人が確認された。2日連続で8千人を超えたのは昨年9月11日以来、約4カ月ぶり。全国的に感染拡大が進む中、年をまたいだ1週間の感染者の過半数が30代以下だった。コロナ特措法に基づく「まん延防止等重点措置」が9日から適用された3県では、広島で過去最多の619人が確認された。"
 JA_REGEX = "[がでに]"
 DESCRIPTION = "spaCy自然語言處理模型展示"
 
@@ -69,7 +68,7 @@ with left:
 
 with right:
     # Select num of tokens 
-    selected_tok_nums = st.number_input("請選擇斷詞數量：", 1, 5, 2)
+    selected_tok_nums = st.number_input("請選擇斷詞數量：", 1, 5, 1)
     st.markdown("---")
 
     # Select patterns
