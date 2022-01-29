@@ -59,9 +59,9 @@ st.markdown("---")
 st.markdown("## 待分析文本") 
 if selected_model == models_to_display[0]:
     # Select a tokenizer if the Chinese model is chosen
-    selected_tokenizer = st.radio("請選擇斷詞模型", ["jieba-TW", "spaCy"])
-    if selected_tokenizer == "jieba-TW":
-        nlp.tokenizer = JiebaTokenizer(nlp.vocab)
+    #selected_tokenizer = st.radio("請選擇斷詞模型", ["jieba-TW", "spaCy"])
+    #if selected_tokenizer == "jieba-TW":
+        #nlp.tokenizer = JiebaTokenizer(nlp.vocab)
     default_text = ZH_TEXT
     default_regex = ZH_REGEX
 elif selected_model == models_to_display[1]:
@@ -85,5 +85,9 @@ with left:
     st.markdown("---")
 
 with right:
+    tokens = jieba.cut(default_text) 
+    num_toks = len(tokens)
+    st.write(tokens)
+    st.write(num_toks)
     st.markdown("---")
 
