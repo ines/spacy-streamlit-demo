@@ -78,11 +78,11 @@ with left:
     st.markdown("---")
 
 with right:
-    tokens = [tok.text for tok in doc]
+    tokens = [tok.text for tok in doc if not tok.is_punt]
     spaced_tokens = " | ".join(tokens)
     if selected_model == models_to_display[0]:    
         pinyin = hanzi.to_pinyin(spaced_tokens)
-        st.markdown("## 原文") 
+        st.markdown("## 去除標點後原文") 
         st.write(spaced_tokens)
         st.markdown("## 拼音") 
         st.write(pinyin)
