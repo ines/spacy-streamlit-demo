@@ -4,13 +4,15 @@ from spacy.tokens import Doc
 import streamlit as st
 import jieba
 from dragonmapper import hanzi, transcriptions
+import requests 
 
-# Global setting
+# Global variables
 MODELS = {"中文(zh_core_web_sm)": "zh_core_web_sm", 
           "English(en_core_web_sm)": "en_core_web_sm", 
           "日本語(ja_core_news_sm)": "ja_core_news_sm"}
 models_to_display = list(MODELS.keys())
 ZH_TEXT = "（中央社）中央流行疫情指揮中心宣布，今天國內新增60例COVID-19（2019冠狀病毒疾病），分別為49例境外移入，11例本土病例，是去年8月29日本土新增13例以來的新高，初步研判其中10例個案皆與桃園機場疫情有關。"
+MOEDICT_URL = "https://www.moedict.tw/uni/"
 ZH_REGEX = "\d{2,4}"
 EN_TEXT = "(CNN) Covid-19 hospitalization rates among children are soaring in the United States, with an average of 4.3 children under 5 per 100,000 hospitalized with an infection as of the week ending January 1, up from 2.6 children the previous week, according to data from the US Centers for Disease Control and Prevention. This represents a 48% increase from the week ending December 4, and the largest increase in hospitalization rate this age group has seen over the course of the pandemic."
 EN_REGEX = "(ed|ing)$"
@@ -61,7 +63,8 @@ elif selected_model == models_to_display[2]:
     default_text = JA_TEXT
     default_regex = JA_REGEX 
 
-doc = nlp(default_text)
+text = st.text_area("",  default_text)
+doc = nlp(text)
 st.markdown("---")
 
 # Two columns
@@ -77,8 +80,27 @@ with left:
 with right:
     tokens = [tok.text for tok in doc]
     spaced_tokens = " | ".join(tokens)
-    pinyin = hanzi.to_pinyin(spaced_tokens)
-    st.write(spaced_tokens)
-    st.markdown("---")
-    st.write(pinyin)
-    st.markdown("---")
+    if selected_model == models_to_display[0]:    
+        pinyin = hanzi.to_pinyin(spaced_tokens)
+        st.markdown("## 原文") 
+        st.write(spaced_tokens)
+        st.markdown("## 拼音") 
+        st.write(pinyin)
+        st.markdown("## 動詞")
+        verbs = [tok.text for tok in doc if tok.pos_ == "VERB"]
+        for v in verbs:
+            st.write(f"### {v}")
+            res = requests.get(MOEDICT_URL+v)
+            if res:
+                with st.expander("點擊 + 查看單詞解釋"):
+                    st.json(res.json())
+            
+        st.markdown("## 名詞")
+        nouns = [tok.text for tok in doc if tok.pos_ == "NOUN"]
+        for n in nouns:
+            st.write(f"### {n}")
+            res = requests.get(MOEDICT_URL+n)
+            if res:
+                with st.expander("點擊 + 查看單詞解釋"):
+                    st.json(res.json())
+
