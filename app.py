@@ -70,7 +70,7 @@ with left:
     # Model output
     ner_labels = nlp.get_pipe("ner").labels
     visualize_ner(doc, labels=ner_labels, show_table=False, title="命名實體")
-    visualize_tokens(doc, attrs=["text", "pos_", "dep_", "like_num", "head.text"], title="斷詞特徵")
+    visualize_tokens(doc, attrs=["text", "pos_", "dep_", "like_num", "head"], title="斷詞特徵")
     st.markdown("---")
 
 with right:
