@@ -2,6 +2,7 @@ import spacy
 from spacy_streamlit import visualize_ner, visualize_tokens
 from spacy.matcher import Matcher
 import streamlit as st
+import jieba
 
 # Global setting
 MODELS = {"中文(zh_core_web_sm)": "zh_core_web_sm", 
@@ -42,7 +43,14 @@ elif selected_model == models_to_display[2]:
     default_regex = JA_REGEX 
 
 user_text = st.text_area("請輸入文章：", default_text)
+jieba_res = jieba.cut(user_text) 
+jieba_res = "|".join(jieba_res)
+st.write(f"Jieba: {jieba_res}")
+
 doc = nlp(user_text)
+spacy_res = [tok.text for tok in doc]
+spacy_res = "|".join(spacy_res)
+st.write(f"spaCy: {spacy_res}")
 st.markdown("---")
 
 # Pattern input
