@@ -1,6 +1,5 @@
 import spacy
 from spacy_streamlit import visualize_ner, visualize_tokens
-from spacy.matcher import Matcher
 from spacy.tokens import Doc
 import streamlit as st
 import jieba
@@ -38,13 +37,7 @@ st.markdown(f"# {DESCRIPTION}")
 st.markdown("## 語言模型") 
 selected_model = st.radio("請選擇語言", models_to_display)
 nlp = spacy.load(MODELS[selected_model])
-
-# Choose a tokenizer for the Chinese model
-if selected_model == "中文(zh_core_web_sm)":
-          selected_tokenizer = st.radio("請選擇斷詞模型", ["jieba-TW", "spaCy"])
-          if selected_tokenizer == "jieba-TW":
-                    nlp.tokenizer = JiebaTokenizer(nlp.vocab)
-
+          
 # Merge entity spans to tokens
 nlp.add_pipe("merge_entities") 
 st.markdown("---")
@@ -52,6 +45,10 @@ st.markdown("---")
 # Default text and regex
 st.markdown("## 待分析文本") 
 if selected_model == models_to_display[0]:
+    # Select a tokenizer if the Chinese model is chosen
+    selected_tokenizer = st.radio("請選擇斷詞模型", ["jieba-TW", "spaCy"]
+    if selected_tokenizer == "jieba-TW":
+        nlp.tokenizer = JiebaTokenizer(nlp.vocab)
     default_text = ZH_TEXT
     default_regex = ZH_REGEX
 elif selected_model == models_to_display[1]:
@@ -87,30 +84,5 @@ with left:
     st.markdown("---")
 
 with right:
-    # Select num of tokens 
-    selected_tok_nums = st.number_input("請選擇斷詞數量：", 1, 5, 1)
     st.markdown("---")
 
-    # Select patterns
-    patterns = []
-    for tok_num in range(selected_tok_nums):
-        pattern = show_one_token_attr(tok_num)
-        patterns += pattern
-    
-    # Match the text with the selected patterns
-    matcher = Matcher(nlp.vocab)
-    matcher.add('Rule', [patterns])
-    matches = matcher(doc, as_spans=True)
-
-    # Output
-    if matches:
-        st.markdown("## 規則匹配結果：")
-        for span in matches:
-            text = span.text
-            left_toks = span.lefts
-            left_texts = [t.text for t in left_toks]
-            right_toks = span.rights
-            right_texts = [t.text for t in right_toks]
-            st.write(f"{left_texts} **{text}** {right_texts}")
-    else:
-        st.markdown("## 沒有任何匹配結果！")
