@@ -26,18 +26,6 @@ class JiebaTokenizer:
         words = jieba.cut(text) # returns a generator
         tokens = list(words)
         spaces = [False] * len(tokens)
-        # Avoid zero-length tokens
-        for i, word in enumerate(words):
-            if word == "":
-                words[i] = " "
-                spaces[i] = False
-        # Remove the final trailing space
-        if words[-1] == " ":
-            words = words[0:-1]
-            spaces = spaces[0:-1]
-        else:
-           spaces[-1] = False
-                    
         doc = Doc(self.vocab, words=words, spaces=spaces)
         return doc
 
