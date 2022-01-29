@@ -61,18 +61,6 @@ elif selected_model == models_to_display[2]:
 doc = nlp(default_text)
 st.markdown("---")
 
-# Pattern input
-def show_one_token_attr(tok_num):
-    pattern_types = ["正則表達", "命名實體"]
-    selected_info = st.radio("請選擇匹配方式：", pattern_types, key="info_"+str(tok_num))
-    if selected_info == pattern_types[0]:
-        regex_text = st.text_input("請輸入正則表達：", default_regex, key="regex_"+str(tok_num))
-        pattern = [{'TEXT': {'REGEX': regex_text}}]
-    elif selected_info == pattern_types[1]:
-        ner_text = st.selectbox("請選擇命名實體類別：", ner_labels, key="ner_"+str(tok_num))
-        pattern = [{'ENT_TYPE': ner_text}]
-    return pattern 
-
 # Two columns
 left, right = st.columns(2)
 
@@ -80,7 +68,7 @@ with left:
     # Model output
     ner_labels = nlp.get_pipe("ner").labels
     visualize_ner(doc, labels=ner_labels, show_table=False, title="命名實體")
-    visualize_tokens(doc, attrs=["text", "pos_", "dep_", "ent_type_"], title="斷詞特徵")
+    visualize_tokens(doc, attrs=["text", "pos_", "dep_"], title="斷詞特徵")
     st.markdown("---")
 
 with right:
