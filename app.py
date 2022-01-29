@@ -23,8 +23,9 @@ class JiebaTokenizer:
         self.vocab = vocab
 
     def __call__(self, text):
-        words = jieba.cut(text)
-        spaces = [False] * len(words)
+        words = jieba.cut(text) # returns a generator
+        tokens = list(words)
+        spaces = [False] * len(tokens)
         # Avoid zero-length tokens
         for i, word in enumerate(words):
             if word == "":
@@ -59,9 +60,9 @@ st.markdown("---")
 st.markdown("## 待分析文本") 
 if selected_model == models_to_display[0]:
     # Select a tokenizer if the Chinese model is chosen
-    #selected_tokenizer = st.radio("請選擇斷詞模型", ["jieba-TW", "spaCy"])
-    #if selected_tokenizer == "jieba-TW":
-        #nlp.tokenizer = JiebaTokenizer(nlp.vocab)
+    selected_tokenizer = st.radio("請選擇斷詞模型", ["jieba-TW", "spaCy"])
+    if selected_tokenizer == "jieba-TW":
+        nlp.tokenizer = JiebaTokenizer(nlp.vocab)
     default_text = ZH_TEXT
     default_regex = ZH_REGEX
 elif selected_model == models_to_display[1]:
@@ -85,9 +86,5 @@ with left:
     st.markdown("---")
 
 with right:
-    tokens = jieba.cut(default_text) 
-    st.write(list(tokens))
-    num_toks = len(list(tokens))
-    st.write(num_toks)
     st.markdown("---")
 
