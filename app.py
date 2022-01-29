@@ -78,7 +78,7 @@ with right:
     tokens = [tok.text for tok in doc]
     tokens = " ".join(tokens)
     pinyin = hanzi.to_pinyin(tokens)
-    zhuyin = transcription.to_zhuyin(pinyin)
+    zhuyin = transcriptions.to_zhuyin(pinyin)
     st.write(tokens)
     st.markdown("---")
     st.write(pinyin)
