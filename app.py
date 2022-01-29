@@ -1,6 +1,7 @@
 import spacy
 from spacy_streamlit import visualize_ner, visualize_tokens
 from spacy.matcher import Matcher
+from spacy.tokens import Doc
 import streamlit as st
 import jieba
 
@@ -17,20 +18,38 @@ JA_TEXT = "（朝日新聞）新型コロナウイルスの国内感染者は9�
 JA_REGEX = "[たい]$"
 DESCRIPTION = "spaCy自然語言處理模型展示"
 
+# Custom tokenizer class
+class JiebaTokenizer:
+    def __init__(self, vocab):
+        self.vocab = vocab
+
+    def __call__(self, text):
+        words = jieba.cut(text)
+        spaces = [False] * len(words)
+        return Doc(self.vocab, words=words, spaces=spaces)
+
 st.set_page_config(
     page_icon="🤠",
     layout="wide",
 )
 
-# Model
+# Choose a language model
 st.markdown(f"# {DESCRIPTION}") 
 st.markdown("## 語言模型") 
 selected_model = st.radio("請選擇語言", models_to_display)
 nlp = spacy.load(MODELS[selected_model])
+
+# Choose a tokenizer for the Chinese model
+if selected_model == "中文(zh_core_web_sm)":
+          selected_tokenizer = st.radio("請選擇斷詞模型", ["jieba-TW", "spaCy"])
+          if selected_tokenizer == "jieba-TW":
+                    nlp.tokenizer = JiebaTokenizer(nlp.vocab)
+
+# Merge entity spans to tokens
 nlp.add_pipe("merge_entities") 
 st.markdown("---")
 
-# Text
+# Default text and regex
 st.markdown("## 待分析文本") 
 if selected_model == models_to_display[0]:
     default_text = ZH_TEXT
@@ -42,15 +61,7 @@ elif selected_model == models_to_display[2]:
     default_text = JA_TEXT
     default_regex = JA_REGEX 
 
-user_text = st.text_area("請輸入文章：", default_text)
-jieba_res = jieba.cut(user_text) 
-jieba_res = "|".join(jieba_res)
-st.write(f"jieba: {jieba_res}")
-
 doc = nlp(user_text)
-spacy_res = [tok.text for tok in doc]
-spacy_res = "|".join(spacy_res)
-st.write(f"spaCy: {spacy_res}")
 st.markdown("---")
 
 # Pattern input
