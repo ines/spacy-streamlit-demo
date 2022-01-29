@@ -25,7 +25,20 @@ class JiebaTokenizer:
     def __call__(self, text):
         words = jieba.cut(text)
         spaces = [False] * len(words)
-        return Doc(self.vocab, words=words, spaces=spaces)
+        # Avoid zero-length tokens
+        for i, word in enumerate(words):
+            if word == "":
+                words[i] = " "
+                spaces[i] = False
+        # Remove the final trailing space
+        if words[-1] == " ":
+            words = words[0:-1]
+            spaces = spaces[0:-1]
+        else:
+           spaces[-1] = False
+                    
+        doc = Doc(self.vocab, words=words, spaces=spaces)
+        return doc
 
 st.set_page_config(
     page_icon="🤠",
