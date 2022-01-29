@@ -2,7 +2,7 @@ import spacy
 from spacy_streamlit import visualize_ner, visualize_tokens
 from spacy.matcher import Matcher
 import streamlit as st
-from /tmp/pip-req-build-nwvcv1uq import jieba
+from tmp.pip-req-build-nwvcv1uq import jieba
 
 # Global setting
 MODELS = {"中文(zh_core_web_sm)": "zh_core_web_sm", 
