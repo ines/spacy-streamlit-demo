@@ -88,19 +88,26 @@ with right:
         st.write(pinyin)
         st.markdown("## 動詞")
         verbs = [tok.text for tok in doc if tok.pos_ == "VERB"]
-        for v in verbs:
-            st.write(f"### {v}")
-            res = requests.get(MOEDICT_URL+v)
-            if res:
-                with st.expander("點擊 + 查看單詞解釋"):
-                    st.json(res.json())
+        if verbs:
+            selected_verbs = st.multiselect("請選擇斷詞模型", verbs, verbs[0:1])
+            for v in selected_verbs:
+                st.write(f"### {v}")
+                res = requests.get(MOEDICT_URL+v)
+                if res:
+                    with st.expander("點擊 + 查看單詞解釋"):
+                        st.json(res.json())
+                else:
+                    st.write("查無結果")
             
         st.markdown("## 名詞")
         nouns = [tok.text for tok in doc if tok.pos_ == "NOUN"]
-        for n in nouns:
-            st.write(f"### {n}")
-            res = requests.get(MOEDICT_URL+n)
-            if res:
-                with st.expander("點擊 + 查看單詞解釋"):
-                    st.json(res.json())
-
+        if nouns:
+            selected_nouns = st.multiselect("請選擇斷詞模型", nouns, nouns[0:1])
+            for n in selected_nouns:
+                st.write(f"### {n}")
+                res = requests.get(MOEDICT_URL+n)
+                if res:
+                    with st.expander("點擊 + 查看單詞解釋"):
+                        st.json(res.json())
+                else:
+                    st.write("查無結果")
