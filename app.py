@@ -46,7 +46,7 @@ st.markdown("---")
 st.markdown("## 待分析文本") 
 if selected_model == models_to_display[0]:
     # Select a tokenizer if the Chinese model is chosen
-    selected_tokenizer = st.radio("請選擇斷詞模型", ["jieba-TW", "spaCy"]
+    selected_tokenizer = st.radio("請選擇斷詞模型", ["jieba-TW", "spaCy"])
     if selected_tokenizer == "jieba-TW":
         nlp.tokenizer = JiebaTokenizer(nlp.vocab)
     default_text = ZH_TEXT
