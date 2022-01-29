@@ -3,6 +3,7 @@ from spacy_streamlit import visualize_ner, visualize_tokens
 from spacy.tokens import Doc
 import streamlit as st
 import jieba
+from dragonmapper import hanzi, transcriptions
 
 # Global setting
 MODELS = {"中文(zh_core_web_sm)": "zh_core_web_sm", 
@@ -74,5 +75,13 @@ with left:
     st.markdown("---")
 
 with right:
+    tokens = [tok.text for tok in doc]
+    tokens = " ".join(tokens)
+    pinyin = hanzi.to_pinyin(tokens)
+    zhuyin = transcription.to_zhuyin(pinyin)
+    st.write(tokens)
     st.markdown("---")
+    st.write(pinyin)
+    st.markdown("---")
+    st.write(zhuyin)
 
