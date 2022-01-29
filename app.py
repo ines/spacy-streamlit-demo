@@ -86,8 +86,6 @@ with left:
 
 with right:
     tokens = jieba.cut(default_text) 
-    num_toks = len(tokens)
     st.write(tokens)
-    st.write(num_toks)
     st.markdown("---")
 
