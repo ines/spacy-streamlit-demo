@@ -76,12 +76,12 @@ with left:
 
 with right:
     tokens = [tok.text for tok in doc]
-    tokens = " ".join(tokens)
-    pinyin = hanzi.to_pinyin(tokens)
-    zhuyin = transcriptions.to_zhuyin(pinyin)
-    st.write(tokens)
+    spaced_tokens = " ".join(tokens)
+    pinyin = hanzi.to_pinyin(spaced_tokens)
+    #zhuyin = transcriptions.to_zhuyin(pinyin)
+    st.write(spaced_tokens)
     st.markdown("---")
     st.write(pinyin)
     st.markdown("---")
-    st.write(zhuyin)
+    #st.write(zhuyin)
 
