@@ -61,7 +61,7 @@ elif selected_model == models_to_display[2]:
     default_text = JA_TEXT
     default_regex = JA_REGEX 
 
-doc = nlp(user_text)
+doc = nlp(default_text)
 st.markdown("---")
 
 # Pattern input
