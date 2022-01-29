@@ -24,9 +24,9 @@ class JiebaTokenizer:
 
     def __call__(self, text):
         words = jieba.cut(text) # returns a generator
-        tokens = list(words)
+        tokens = list(words) # convert the genetator to a list
         spaces = [False] * len(tokens)
-        doc = Doc(self.vocab, words=words, spaces=spaces)
+        doc = Doc(self.vocab, words=tokens, spaces=spaces)
         return doc
 
 st.set_page_config(
