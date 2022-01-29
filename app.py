@@ -76,14 +76,9 @@ with left:
 
 with right:
     tokens = [tok.text for tok in doc]
-    spaced_tokens = " ".join(tokens)
+    spaced_tokens = " | ".join(tokens)
     pinyin = hanzi.to_pinyin(spaced_tokens)
-    zhuyin = hanzi.to_zhuyin(spaced_tokens)
-    ipa = hanzi.to_ipa(spaced_tokens)
     st.write(spaced_tokens)
     st.markdown("---")
     st.write(pinyin)
     st.markdown("---")
-    st.write(zhuyin)
-    st.markdown("---")
-    st.write(ipa)
