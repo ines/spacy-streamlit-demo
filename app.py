@@ -117,7 +117,7 @@ with right:
         st.markdown("## 斷詞原文") 
         st.write(spaced_tokens)
         st.markdown("## 斷詞假名")
-        readings = [tok.morph.get("Reading") for tok in doc]
+        readings = [str(tok.morph.get("Reading")) for tok in doc]
         readings = TOK_SEP.join(readings)
         verbs = [tok.text for tok in doc if tok.pos_ == "VERB"]
         if verbs:
