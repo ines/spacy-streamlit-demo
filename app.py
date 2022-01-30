@@ -1,10 +1,11 @@
+from dragonmapper import hanzi, transcriptions
+import jieba
+import pandas as pd
+import requests 
 import spacy
 from spacy_streamlit import visualize_ner, visualize_tokens
 from spacy.tokens import Doc
 import streamlit as st
-import jieba
-from dragonmapper import hanzi, transcriptions
-import requests 
 
 # Global variables
 MODELS = {"中文": "zh_core_web_sm", 
@@ -119,13 +120,32 @@ with right:
         st.markdown("## 斷詞假名")
         readings = [str(tok.morph.get("Reading")) for tok in doc]
         readings = TOK_SEP.join(readings)
-        verbs = [tok.text for tok in doc if tok.pos_ == "VERB"]
+        st.write(readings)
+        verbs = [tok for tok in doc if tok.pos_ == "VERB"]
         if verbs:
             st.markdown("## 動詞")
-
+            df = pd.DataFrame(
+                {
+                    "單詞": [tok.orth_ for tok in verbs],
+                    "發音": [tok.morph.get("Reading") for tok in verbs],
+                    "詞形變化": [tok.morph.get("Inflection") for tok in verbs],
+                    "原形": [tok.lemma_ for tok in verbs],
+                    "正規形": [tok.norm_ for tok in verbs],
+                }
+            )
+            st.dataframe(df)
             
-        nouns = [tok.text for tok in doc if tok.pos_ == "AUX"]
-        if nouns:
+        auxes = [tok for tok in doc if tok.pos_ == "AUX"]
+        if auxes:
             st.markdown("## 助動詞")
-
+            df = pd.DataFrame(
+                {
+                    "單詞": [tok.orth_ for tok in auxes],
+                    "發音": [tok.morph.get("Reading") for tok in auxes],
+                    "詞形變化": [tok.morph.get("Inflection") for tok in auxes],
+                    "原形": [tok.lemma_ for tok in auxes],
+                    "正規形": [tok.norm_ for tok in auxes],
+                }
+            )
+            st.dataframe(df)
 
