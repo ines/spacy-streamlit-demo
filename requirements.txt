@@ -1,4 +1,7 @@
-spacy>=3.0.0,<3.1.0
+# A Japanese model with a lemmatizer and a morphologizer more fine-grained than the default one in spaCy
+ginza 
+ja_ginza
+# spacy>=3.0.0,<3.1.0, this is commented out because ja_ginza depends on spacy>=3.2.0
 spacy-streamlit>=1.0.0rc1,<1.1.0
 
 # sapCy models
@@ -9,6 +12,4 @@ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.0.0
 # conversion between hanzi and transcriptions 
 dragonmapper
 
-# A Japanese model with a lemmatizer and a morphologizer more fine-grained than the default one in spaCy
-ginza 
-ja_ginza
+
