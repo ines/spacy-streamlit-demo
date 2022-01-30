@@ -81,8 +81,8 @@ with left:
 
 with right:
     tokens = [tok.text for tok in doc]
-    spaced_tokens = TOK_SEP.join(tokens)
     if selected_model == models_to_display[0]: # Chinese 
+        spaced_tokens = TOK_SEP.join(tokens)
         pinyin = hanzi.to_pinyin(spaced_tokens)
         st.markdown("## Original text with words seperated by |") 
         st.write(spaced_tokens)
@@ -115,12 +115,12 @@ with right:
                     st.write("No result")
                     
     elif selected_model == models_to_display[2]: # Japanese 
-        st.markdown("## 斷詞原文") 
-        st.write(spaced_tokens)
-        st.markdown("## 斷詞假名")
+        st.markdown("## 原文與發音") 
         readings = [str(tok.morph.get("Reading")) for tok in doc]
-        readings = TOK_SEP.join(readings)
-        st.write(readings)
+        text_with_readings = [tok+reading for tok, reading in zip(tokens, readings)]
+        text_with_readings = TOK_SEP.join(text_with_readings)
+        st.write(text_with_readings)
+
         verbs = [tok for tok in doc if tok.pos_ == "VERB"]
         if verbs:
             st.markdown("## 動詞")
@@ -130,7 +130,7 @@ with right:
                     "發音": [tok.morph.get("Reading") for tok in verbs],
                     "詞形變化": [tok.morph.get("Inflection") for tok in verbs],
                     "原形": [tok.lemma_ for tok in verbs],
-                    "正規形": [tok.norm_ for tok in verbs],
+                    #"正規形": [tok.norm_ for tok in verbs],
                 }
             )
             st.dataframe(df)
@@ -144,7 +144,7 @@ with right:
                     "發音": [tok.morph.get("Reading") for tok in auxes],
                     "詞形變化": [tok.morph.get("Inflection") for tok in auxes],
                     "原形": [tok.lemma_ for tok in auxes],
-                    "正規形": [tok.norm_ for tok in auxes],
+                    #"正規形": [tok.norm_ for tok in auxes],
                 }
             )
             st.dataframe(df)
