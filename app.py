@@ -123,7 +123,9 @@ with right:
         st.markdown("## 原文") 
         for idx, sent in enumerate(doc.sents):
             clean_tokens = [tok for tok in sent if tok.pos_ not in punct_and_sym]
-            display = [f"{tok.text} [{"/".join(tok.morph.get("Reading"))}]" for tok in clean_tokens]
+            tokens_text = [tok.text for tok in clean_tokens]
+            readings = ["/".join(tok.morph.get("Reading")) for tok in clean_tokens]
+            display = [f"{text} [{reading}]" for text, reading in zip(tokens_text, readings)]
             display_text = TOK_SEP.join(display)
             st.write(f"{idx+1} >>> {display_text}")          
                     
