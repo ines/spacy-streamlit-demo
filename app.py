@@ -123,7 +123,7 @@ with right:
         st.markdown("## 原文") 
         for idx, sent in enumerate(doc.sents):
             clean_tokens = [tok for tok in sent if tok.pos_ not in punct_and_sym]
-            display = [f"{tok.text} {"/".join(tok.morph.get("Reading"))}" for tok in clean_tokens]
+            display = [f"{tok.text} [{"/".join(tok.morph.get("Reading"))}]" for tok in clean_tokens]
             display_text = TOK_SEP.join(display)
             st.write(f"{idx+1} >>> {display_text}")          
                     
@@ -156,4 +156,4 @@ with right:
             st.dataframe(df)
 
     else:
-          st.write("Work in progress")
+        st.write("Work in progress")
