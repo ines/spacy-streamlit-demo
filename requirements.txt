@@ -1,4 +1,4 @@
-# A Japanese model with a lemmatizer and a morphologizer more fine-grained than the default one in spaCy
+# ja_ginza is a Japanese model with a lemmatizer and a morphologizer more fine-grained than the default one in spaCy
 ginza 
 ja_ginza
 # ja_ginza depends on spacy>=3.2.0,<3.3.0
@@ -12,4 +12,5 @@ https://github.com/explosion/spacy-models/releases/download/zh_core_web_sm-3.2.0
 # conversion between hanzi and transcriptions 
 dragonmapper
 
-
+# an online Japanese dictionary
+jisho_api
