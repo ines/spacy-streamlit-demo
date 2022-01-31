@@ -34,6 +34,26 @@ class JiebaTokenizer:
         doc = Doc(self.vocab, words=tokens, spaces=spaces)
         return doc
 
+# Utility functions
+def create_jap_df(tokens):
+          df = pd.DataFrame(
+              {
+                  "單詞": [tok.orth_ for tok in tokens],
+                  "發音": ["/".join(tok.morph.get("Reading")) for tok in tokens],
+                  "詞形變化": ["/".join(tok.morph.get("Inflection")) for tok in tokens],
+                  "原形": [tok.lemma_ for tok in tokens],
+                  #"正規形": [tok.norm_ for tok in verbs],
+              }
+          )
+          st.dataframe(df)
+          csv = df.to_csv().encode('utf-8')
+          st.download_button(
+              label="下載表格",
+              data=csv,
+              file_name='jap_forms.csv',
+              mime='text/csv',
+              )
+          
 st.set_page_config(
     page_icon="🤠",
     layout="wide",
@@ -53,7 +73,7 @@ st.markdown("---")
 st.markdown("## 待分析文本") 
 if selected_model == models_to_display[0]: # Chinese
     # Select a tokenizer if the Chinese model is chosen
-    selected_tokenizer = st.radio("請選擇斷詞模型", ["jieba-TW", "spaCy"])
+    selected_tokenizer = st.radio("請選擇斷詞模型", ["spaCy", "jieba-TW"])
     if selected_tokenizer == "jieba-TW":
         nlp.tokenizer = JiebaTokenizer(nlp.vocab)
     default_text = ZH_TEXT
@@ -82,7 +102,7 @@ with left:
 with right:
     punct_and_sym = ["PUNCT", "SYM"]
     if selected_model == models_to_display[0]: # Chinese 
-        st.markdown("## 原文") 
+        st.markdown("## 分析後文本") 
         for idx, sent in enumerate(doc.sents):
             tokens_text = [tok.text for tok in sent if tok.pos_ not in punct_and_sym]
             pinyins = [hanzi.to_pinyin(tok) for tok in tokens_text]
@@ -120,7 +140,7 @@ with right:
                     st.write("查無結果")                            
                     
     elif selected_model == models_to_display[2]: # Japanese 
-        st.markdown("## 原文") 
+        st.markdown("## 分析後文本") 
         for idx, sent in enumerate(doc.sents):
             clean_tokens = [tok for tok in sent if tok.pos_ not in punct_and_sym]
             tokens_text = [tok.text for tok in clean_tokens]
@@ -128,34 +148,17 @@ with right:
             display = [f"{text} [{reading}]" for text, reading in zip(tokens_text, readings)]
             display_text = TOK_SEP.join(display)
             st.write(f"{idx+1} >>> {display_text}")          
-                    
-        verbs = [tok for tok in doc if tok.pos_ == "VERB"]
+        
+        # tag_ seems to be more accurate than pos_
+        verbs = [tok for tok in doc if tok.tag_.startswith("動詞")]
         if verbs:
             st.markdown("## 動詞")
-            df = pd.DataFrame(
-                {
-                    "單詞": [tok.orth_ for tok in verbs],
-                    "發音": ["/".join(tok.morph.get("Reading")) for tok in verbs],
-                    "詞形變化": ["/".join(tok.morph.get("Inflection")) for tok in verbs],
-                    "原形": [tok.lemma_ for tok in verbs],
-                    #"正規形": [tok.norm_ for tok in verbs],
-                }
-            )
-            st.dataframe(df)
-            
-        auxes = [tok for tok in doc if tok.pos_ == "AUX"]
-        if auxes:
-            st.markdown("## 助動詞")
-            df = pd.DataFrame(
-                {
-                    "單詞": [tok.orth_ for tok in auxes],
-                    "發音": ["/".join(tok.morph.get("Reading")) for tok in auxes],
-                    "詞形變化": ["/".join(tok.morph.get("Inflection")) for tok in auxes],
-                    "原形": [tok.lemma_ for tok in auxes],
-                    #"正規形": [tok.norm_ for tok in auxes],
-                }
-            )
-            st.dataframe(df)
+            create_jap_df(verbs)
+          
+        adjs = [tok for tok in doc if tok.pos_ == "ADJ"]
+        if adjs:
+            st.markdown("## 形容詞")
+            create_jap_df(adjs)
 
     else:
         st.write("Work in progress")
