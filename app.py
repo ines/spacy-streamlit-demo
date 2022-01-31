@@ -80,42 +80,47 @@ with left:
     st.markdown("---")
 
 with right:
-    tokens = [tok.text for tok in doc]
+    punct_and_sym = ["PUNCT", "SYM<"]
     if selected_model == models_to_display[0]: # Chinese 
-        spaced_tokens = TOK_SEP.join(tokens)
-        pinyin = hanzi.to_pinyin(spaced_tokens)
-        st.markdown("## Original text with words seperated by |") 
-        st.write(spaced_tokens)
-        st.markdown("## Pinyin") 
-        st.write(pinyin)
-        verbs = [tok.text for tok in doc if tok.pos_ == "VERB"]
-        if verbs:
-            st.markdown("## Verbs")
-            selected_verbs = st.multiselect("Select verbs to look up", verbs, verbs[0:1])
+          st.markdown("## 原文") 
+          for idx, sent in enumerate(doc.sents):
+                tokens_text = [tok.text for tok in sent if tok.pos_ not in punct_and_sym]
+                pinyins = [hanzi.to_pinyin(tok) for tok in tokens_text]
+                display = []
+                for text, pinyin in zip(tokens_text, pinyins):
+                    res = f"{text} [{pinyin}]"
+                    display.append(res)
+                display_text = TOK_SEP.join(display)
+                st.write(f"{idx+1} >>> {display_text}")
+   
+          verbs = [tok.text for tok in doc if tok.pos_ == "VERB"]
+          if verbs:
+            st.markdown("## 動詞")
+            selected_verbs = st.multiselect("請選擇要查詢的單詞: ", verbs, verbs[0:1])
             for v in selected_verbs:
                 st.write(f"### {v}")
                 res = requests.get(MOEDICT_URL+v)
                 if res:
-                    with st.expander("Click on + to see details."):
+                    with st.expander("點擊 + 查看更多"):
                         st.json(res.json())
                 else:
-                    st.write("No result")
+                    st.write("查無結果")
             
-        nouns = [tok.text for tok in doc if tok.pos_ == "NOUN"]
-        if nouns:
-            st.markdown("## Nouns")
-            selected_nouns = st.multiselect("Select nouns to look up", nouns, nouns[0:1])
+          nouns = [tok.text for tok in doc if tok.pos_ == "NOUN"]
+          if nouns:
+            st.markdown("## 名詞")
+            selected_nouns = st.multiselect("請選擇要查詢的單詞: ", nouns, nouns[0:1])
             for n in selected_nouns:
                 st.write(f"### {n}")
                 res = requests.get(MOEDICT_URL+n)
                 if res:
-                    with st.expander("Click on + to see details."):
+                    with st.expander("點擊 + 查看更多"):
                         st.json(res.json())
                 else:
-                    st.write("No result")
+                    st.write("查無結果")                            
                     
     elif selected_model == models_to_display[2]: # Japanese 
-        st.markdown("## 原文與發音") 
+        st.markdown("## 原文") 
         readings = [str(tok.morph.get("Reading")) for tok in doc]
         text_with_readings = [tok+reading for tok, reading in zip(tokens, readings)]
         text_with_readings = TOK_SEP.join(text_with_readings)
