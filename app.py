@@ -82,19 +82,19 @@ with left:
 with right:
     punct_and_sym = ["PUNCT", "SYM<"]
     if selected_model == models_to_display[0]: # Chinese 
-          st.markdown("## 原文") 
-          for idx, sent in enumerate(doc.sents):
-                tokens_text = [tok.text for tok in sent if tok.pos_ not in punct_and_sym]
-                pinyins = [hanzi.to_pinyin(tok) for tok in tokens_text]
-                display = []
-                for text, pinyin in zip(tokens_text, pinyins):
-                    res = f"{text} [{pinyin}]"
-                    display.append(res)
-                display_text = TOK_SEP.join(display)
-                st.write(f"{idx+1} >>> {display_text}")
+        st.markdown("## 原文") 
+        for idx, sent in enumerate(doc.sents):
+            tokens_text = [tok.text for tok in sent if tok.pos_ not in punct_and_sym]
+            pinyins = [hanzi.to_pinyin(tok) for tok in tokens_text]
+            display = []
+            for text, pinyin in zip(tokens_text, pinyins):
+                res = f"{text} [{pinyin}]"
+                display.append(res)
+            display_text = TOK_SEP.join(display)
+            st.write(f"{idx+1} >>> {display_text}")
    
-          verbs = [tok.text for tok in doc if tok.pos_ == "VERB"]
-          if verbs:
+        verbs = [tok.text for tok in doc if tok.pos_ == "VERB"]
+        if verbs:
             st.markdown("## 動詞")
             selected_verbs = st.multiselect("請選擇要查詢的單詞: ", verbs, verbs[0:1])
             for v in selected_verbs:
@@ -106,8 +106,8 @@ with right:
                 else:
                     st.write("查無結果")
             
-          nouns = [tok.text for tok in doc if tok.pos_ == "NOUN"]
-          if nouns:
+        nouns = [tok.text for tok in doc if tok.pos_ == "NOUN"]
+        if nouns:
             st.markdown("## 名詞")
             selected_nouns = st.multiselect("請選擇要查詢的單詞: ", nouns, nouns[0:1])
             for n in selected_nouns:
@@ -121,19 +121,20 @@ with right:
                     
     elif selected_model == models_to_display[2]: # Japanese 
         st.markdown("## 原文") 
-        readings = [str(tok.morph.get("Reading")) for tok in doc]
-        text_with_readings = [tok+reading for tok, reading in zip(tokens, readings)]
-        text_with_readings = TOK_SEP.join(text_with_readings)
-        st.write(text_with_readings)
-
+        for idx, sent in enumerate(doc.sents):
+            clean_tokens = [tok for tok in sent if tok.pos_ not in punct_and_sym]
+            display = [f"{tok.text} {"/".join(tok.morph.get("Reading"))}" for tok in clean_tokens]
+            display_text = TOK_SEP.join(display)
+            st.write(f"{idx+1} >>> {display_text}")          
+                    
         verbs = [tok for tok in doc if tok.pos_ == "VERB"]
         if verbs:
             st.markdown("## 動詞")
             df = pd.DataFrame(
                 {
                     "單詞": [tok.orth_ for tok in verbs],
-                    "發音": [tok.morph.get("Reading") for tok in verbs],
-                    "詞形變化": [tok.morph.get("Inflection") for tok in verbs],
+                    "發音": ["/".join(tok.morph.get("Reading")) for tok in verbs],
+                    "詞形變化": ["/".join(tok.morph.get("Inflection")) for tok in verbs],
                     "原形": [tok.lemma_ for tok in verbs],
                     #"正規形": [tok.norm_ for tok in verbs],
                 }
@@ -146,8 +147,8 @@ with right:
             df = pd.DataFrame(
                 {
                     "單詞": [tok.orth_ for tok in auxes],
-                    "發音": [tok.morph.get("Reading") for tok in auxes],
-                    "詞形變化": [tok.morph.get("Inflection") for tok in auxes],
+                    "發音": ["/".join(tok.morph.get("Reading")) for tok in auxes],
+                    "詞形變化": ["/".join(tok.morph.get("Inflection")) for tok in auxes],
                     "原形": [tok.lemma_ for tok in auxes],
                     #"正規形": [tok.norm_ for tok in auxes],
                 }
