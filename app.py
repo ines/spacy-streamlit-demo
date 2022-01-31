@@ -80,7 +80,7 @@ with left:
     st.markdown("---")
 
 with right:
-    punct_and_sym = ["PUNCT", "SYM<"]
+    punct_and_sym = ["PUNCT", "SYM"]
     if selected_model == models_to_display[0]: # Chinese 
         st.markdown("## 原文") 
         for idx, sent in enumerate(doc.sents):
