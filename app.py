@@ -51,9 +51,9 @@ def create_jap_df(tokens):
               label="下載表格",
               data=csv,
               file_name='jap_forms.csv',
-              mime='text/csv',
               )
-          
+
+# Page setting
 st.set_page_config(
     page_icon="🤠",
     layout="wide",
@@ -114,6 +114,7 @@ with right:
             st.write(f"{idx+1} >>> {display_text}")
    
         verbs = [tok.text for tok in doc if tok.pos_ == "VERB"]
+        verbs = list(set(verbs))
         if verbs:
             st.markdown("## 動詞")
             selected_verbs = st.multiselect("請選擇要查詢的單詞: ", verbs, verbs[0:1])
@@ -127,6 +128,7 @@ with right:
                     st.write("查無結果")
             
         nouns = [tok.text for tok in doc if tok.pos_ == "NOUN"]
+        nouns = list(set(nouns))
         if nouns:
             st.markdown("## 名詞")
             selected_nouns = st.multiselect("請選擇要查詢的單詞: ", nouns, nouns[0:1])
@@ -151,11 +153,13 @@ with right:
         
         # tag_ seems to be more accurate than pos_
         verbs = [tok for tok in doc if tok.tag_.startswith("動詞")]
+        verbs = list(set(verbs))
         if verbs:
             st.markdown("## 動詞")
             create_jap_df(verbs)
           
         adjs = [tok for tok in doc if tok.pos_ == "ADJ"]
+        adjs = list(set(adjs))
         if adjs:
             st.markdown("## 形容詞")
             create_jap_df(adjs)
