@@ -203,12 +203,12 @@ with right:
         st.markdown("## 分析後文本") 
         for idx, sent in enumerate(doc.sents):
             clean_tokens = [tok for tok in sent if tok.pos_ not in ["PUNCT", "SYM"]]
-            display = [f"{tok.text} [> {tok.lemma_}]" if tok.text.lower() != tok.lemma_ else tok.text for tok in clean_tokens]
+            display = [f"{tok.text} [> {tok.lemma_}]" if tok.text.lower() != tok.lemma_.lower() else tok.text for tok in clean_tokens]
             display_text = " ".join(display)
             st.write(f"{idx+1} >>> {display_text}")     
             
         st.markdown("## 詞形變化")
         # Collect inflected forms
-        inflected_forms = [tok for tok in doc if tok.text.lower() != tok.lemma_]
+        inflected_forms = [tok for tok in doc if tok.text.lower() != tok.lemma_.lower()]
         if inflected_forms:
             create_eng_df(inflected_forms)
