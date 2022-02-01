@@ -196,13 +196,12 @@ with right:
 
     elif selected_model == models_to_display[1]: # English         
         st.markdown("## 分析後文本") 
-        wordnet_nlp = spacy.load('en')
-        wordnet_nlp.add_pipe("spacy_wordnet", after='tagger', config={'lang': nlp.lang})
+        nlp.add_pipe("spacy_wordnet", after='tagger', config={'lang': nlp.lang})
+        doc = nlp(text)
         wordnet_domains = ["pure_science", "social_science"]
         for idx, sent in enumerate(doc.sents):
-            sentence = wordnet_nlp(sent.text)
             enriched_sentence = []
-            for tok in sentence:
+            for tok in sent:
                 synsets = tok._.wordnet.wordnet_synsets_for_domain(wordnet_domains)
                 if not synsets:
                     enriched_sentence.append(tok.text)
