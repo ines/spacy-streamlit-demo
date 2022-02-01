@@ -197,7 +197,7 @@ with right:
         doc = nlp(text)
         
         st.markdown("## 關鍵詞") 
-        for keyword, score in doc._.extract_keywords(n=5):
+        for keyword, score in doc._.extract_keywords(n=3):
             print(keyword, "-", score)
         
         st.markdown("## 分析後文本") 
