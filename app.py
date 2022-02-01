@@ -200,6 +200,6 @@ with right:
             
         st.markdown("## 詞形變化")
         # Collect inflected forms
-        inflected_forms = [tok for tok in doc if tok.pos_ in ["VERB", "NOUN", "ADJ"]]
+        inflected_forms = [tok for tok in doc if tok.text!=tok.lemma_]
         if inflected_forms:
             create_eng_df(inflected_forms)
