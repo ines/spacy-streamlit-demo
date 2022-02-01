@@ -15,5 +15,5 @@ dragonmapper
 # an online Japanese dictionary
 jisho_api
 
-# Wordnet for English, Spanish, and Portuguese
-spacy-wordnet
+# YAKE keyword extraction 
+spacy-ke
