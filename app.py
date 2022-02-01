@@ -194,7 +194,7 @@ with right:
         st.markdown("## 分析後文本") 
         for idx, sent in enumerate(doc.sents):
             clean_tokens = [tok for tok in sent if tok.pos_ not in ["PUNCT", "SYM"]]
-            display = [f"{tok.text} [原形: {tok.lemma_}]" if tok.pos_ in ["VERB", "NOUN", "ADJ"] else tok.text for tok in clean_tokens]
+            display = [f"{tok.text} [原形: {tok.lemma_}]" if tok.text!=tok.lemma_ else tok.text for tok in clean_tokens]
             display_text = " ".join(display)
             st.write(f"{idx+1} >>> {display_text}")     
             
