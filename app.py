@@ -50,7 +50,7 @@ def create_jap_df(tokens):
             
     df = pd.DataFrame(
       {
-          "單詞": [tok.orth_ for tok in filtered_tokens],
+          "單詞": [tok.text for tok in filtered_tokens],
           "發音": ["/".join(tok.morph.get("Reading")) for tok in filtered_tokens],
           "詞形變化": ["/".join(tok.morph.get("Inflection")) for tok in filtered_tokens],
           "原形": [tok.lemma_ for tok in filtered_tokens],
@@ -74,7 +74,7 @@ def create_eng_df(tokens):
             
     df = pd.DataFrame(
       {
-          "單詞": [tok.orth_ for tok in filtered_tokens],
+          "單詞": [tok.text.lower() for tok in filtered_tokens],
           "詞類": [tok.pos_ for tok in filtered_tokens],
           "原形": [tok.lemma_ for tok in filtered_tokens],
       }
@@ -203,12 +203,12 @@ with right:
         st.markdown("## 分析後文本") 
         for idx, sent in enumerate(doc.sents):
             clean_tokens = [tok for tok in sent if tok.pos_ not in ["PUNCT", "SYM"]]
-            display = [f"{tok.text} [> {tok.lemma_}]" if tok.text != tok.lemma_ else tok.text for tok in clean_tokens]
+            display = [f"{tok.text} [> {tok.lemma_}]" if tok.text.lower() != tok.lemma_ else tok.text for tok in clean_tokens]
             display_text = " ".join(display)
             st.write(f"{idx+1} >>> {display_text}")     
             
         st.markdown("## 詞形變化")
         # Collect inflected forms
-        inflected_forms = [tok for tok in doc if tok.text != tok.lemma_]
+        inflected_forms = [tok for tok in doc if tok.text.lower() != tok.lemma_]
         if inflected_forms:
             create_eng_df(inflected_forms)
