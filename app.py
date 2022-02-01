@@ -7,7 +7,7 @@ import spacy
 from spacy_streamlit import visualize_ner, visualize_tokens
 #from spacy.language import Language
 from spacy.tokens import Doc
-from spacy_wordnet.wordnet_annotator import WordnetAnnotator 
+import spacy_ke
 import streamlit as st
 
 # Global variables
@@ -193,22 +193,20 @@ with right:
             create_jap_df(inflected_forms)
 
     elif selected_model == models_to_display[1]: # English         
-        st.markdown("## 分析後文本") 
-        nlp.add_pipe("spacy_wordnet", after='tagger', config={'lang': nlp.lang})
+        nlp.add_pipe("yake")
         doc = nlp(text)
-        wordnet_domains = ["pure_science", "social_science"]
+        
+        st.markdown("## 關鍵詞") 
+        for keyword, score in doc._.extract_keywords(n=5):
+            print(keyword, "-", score)
+        
+        st.markdown("## 分析後文本") 
         for idx, sent in enumerate(doc.sents):
-            enriched_sentence = []
-            for tok in sent:
-                synsets = tok._.wordnet.wordnet_synsets_for_domain(wordnet_domains)
-                if not synsets:
-                    enriched_sentence.append(tok.text)
-                else:
-                    lemmas_for_synset = [lemma for s in synsets for lemma in s.lemma_names()]
-                    enriched_sentence.append('({})'.format('|'.join(set(lemmas_for_synset))))
-            display_text = ' '.join(enriched_sentence)
-            st.write(f"{idx+1} >>> {display_text}")          
-
+            clean_tokens = [tok for tok in sent if tok.pos_ not in ["PUNCT", "SYM"]]
+            display = [f"{tok.text} [> {tok.lemma_}]" if tok.text != tok.lemma_ else tok.text for tok in clean_tokens]
+            display_text = " ".join(display)
+            st.write(f"{idx+1} >>> {display_text}")     
+            
         st.markdown("## 詞形變化")
         # Collect inflected forms
         inflected_forms = [tok for tok in doc if tok.text != tok.lemma_]
