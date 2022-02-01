@@ -15,17 +15,15 @@ MODELS = {"中文": "zh_core_web_sm",
           "English": "en_core_web_sm", 
           "日本語": "ja_ginza"}
 models_to_display = list(MODELS.keys())
-ZH_TEXT = """（中央社）
-迎接虎年到來，台北101今天表示，即日起推出「虎年新春燈光秀」，將持續至2月5日，每晚6時至10時，除整點會有報時燈光變化外，每15分鐘還會有3分鐘的燈光秀。台北101下午透過新聞稿表示，今年特別設計「虎年新春燈光秀」，從今晚開始閃耀台北天際線，一直延續至2月5日，共7天。"""
+ZH_TEXT = """（中央社）迎接虎年到來，台北101今天表示，即日起推出「虎年新春燈光秀」，將持續至2月5日，每晚6時至10時，除整點會有報時燈光變化外，每15分鐘還會有3分鐘的燈光秀。台北101下午透過新聞稿表示，今年特別設計「虎年新春燈光秀」，從今晚開始閃耀台北天際線，一直延續至2月5日，共7天。"""
 ZH_REGEX = "\d{2,4}[\u4E00-\u9FFF]+"
-EN_TEXT = """(CNN) 
-Not all Lunar New Year foods are created equal. Some only make a brief appearance at the festival for auspicious purposes. Others are so delicious they grace dim sum tables around the world all year.
+EN_TEXT = """(CNN) Not all Lunar New Year foods are created equal. Some only make a brief appearance at the festival for auspicious purposes. Others are so delicious they grace dim sum tables around the world all year.
 Turnip cake -- called "loh bak goh" in Cantonese -- falls into the latter category.
 Chef Tsang Chiu King, culinary director of Ming Court in Hong Kong's Wan Chai area, has his own theory on why turnip cake is such a popular Lunar New Year dish, especially in southern China.
 "Compared to other Lunar New Year cakes, turnip cake is popular as it's one of the few savory new year puddings. Together with the freshness of the white radish, it can be quite addictive as a snack or a main dish," he says."""
 EN_REGEX = "(ed|ing)$"
-JA_TEXT = """（朝日新聞）
-寅（とら）年の2022年を前に、90種480匹の野生動物を飼育する「到津（いとうづ）の森公園」（北九州市）が盛り上がっている。同園のマスコットはアムールトラのミライ（雌、10歳）。22年は「ニャーニャー」の年としてネコ好きの間で話題となっており、「干支（えと）で唯一のネコ科のトラ人気につながれば」と期待している。"""
+JA_TEXT = """（朝日新聞）台湾気分のパワースポット ＪＲ大久保駅南口のすぐそばにある「東京媽祖廟（まそびょう）」は、台湾で広く信仰されている道教の神様を祭る。居酒屋やコンビニが並ぶ通りで、金色の竜など豪華な装飾が施された４階建ての赤い建物はとても目立つ。
+"""
 JA_REGEX = "[たい]$"
 DESCRIPTION = "AI模型輔助語言學習"
 TOK_SEP = " | "
