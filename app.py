@@ -13,7 +13,6 @@ MODELS = {"中文": "zh_core_web_sm",
           "日本語": "ja_ginza"}
 models_to_display = list(MODELS.keys())
 ZH_TEXT = "（中央社）中央流行疫情指揮中心宣布，今天國內新增60例COVID-19（2019冠狀病毒疾病），分別為49例境外移入，11例本土病例，是去年8月29日本土新增13例以來的新高，初步研判其中10例個案皆與桃園機場疫情有關。"
-MOEDICT_URL = "https://www.moedict.tw/uni/"
 ZH_REGEX = "\d{2,4}"
 EN_TEXT = "(CNN) Covid-19 hospitalization rates among children are soaring in the United States, with an average of 4.3 children under 5 per 100,000 hospitalized with an infection as of the week ending January 1, up from 2.6 children the previous week, according to data from the US Centers for Disease Control and Prevention. This represents a 48% increase from the week ending December 4, and the largest increase in hospitalization rate this age group has seen over the course of the pandemic."
 EN_REGEX = "(ed|ing)$"
@@ -53,6 +52,15 @@ def create_jap_df(tokens):
               file_name='jap_forms.csv',
               )
 
+def moedict_caller(word):
+    st.write(f"### {word}")
+    res = requests.get(f"https://www.moedict.tw/a/{word}.json")
+    if res:
+        with st.expander("點擊 + 查看更多"):
+            st.json(res.json())
+    else:
+        st.write("查無結果")
+          
 # Page setting
 st.set_page_config(
     page_icon="🤠",
@@ -112,34 +120,14 @@ with right:
                 display.append(res)
             display_text = TOK_SEP.join(display)
             st.write(f"{idx+1} >>> {display_text}")
-   
-        verbs = [tok.text for tok in doc if tok.pos_ == "VERB"]
-        verbs = list(set(verbs))
-        if verbs:
-            st.markdown("## 動詞")
-            selected_verbs = st.multiselect("請選擇要查詢的單詞: ", verbs, verbs[0:1])
-            for v in selected_verbs:
-                st.write(f"### {v}")
-                res = requests.get(MOEDICT_URL+v)
-                if res:
-                    with st.expander("點擊 + 查看更多"):
-                        st.json(res.json())
-                else:
-                    st.write("查無結果")
-            
-        nouns = [tok.text for tok in doc if tok.pos_ == "NOUN"]
-        nouns = list(set(nouns))
-        if nouns:
-            st.markdown("## 名詞")
-            selected_nouns = st.multiselect("請選擇要查詢的單詞: ", nouns, nouns[0:1])
-            for n in selected_nouns:
-                st.write(f"### {n}")
-                res = requests.get(MOEDICT_URL+n)
-                if res:
-                    with st.expander("點擊 + 查看更多"):
-                        st.json(res.json())
-                else:
-                    st.write("查無結果")                            
+        
+        st.markdown("## 單詞解釋")
+        clean_tokens_text = [tok.text for tok in doc if tok.pos_ not in punct_and_sym]
+        vocab = list(set(clean_tokens_text))
+        if vocab:
+            selected_words = st.multiselect("請選擇要查詢的單詞: ", vocab, vocab[0:3])
+            for w in selected_words:
+                moedict_caller(w)                        
                     
     elif selected_model == models_to_display[2]: # Japanese 
         st.markdown("## 分析後文本") 
