@@ -193,14 +193,24 @@ with right:
         if inflected_forms:
             create_jap_df(inflected_forms)
 
-    else:
+    elif selected_model == models_to_display[1]: # English         
         st.markdown("## 分析後文本") 
+        wordnet_nlp = spacy.load('en')
+        wordnet_nlp.add_pipe("spacy_wordnet", after='tagger', config={'lang': nlp.lang})
+        wordnet_domains = ["pure_science", "social_science"]
         for idx, sent in enumerate(doc.sents):
-            clean_tokens = [tok for tok in sent if tok.pos_ not in ["PUNCT", "SYM"]]
-            display = [f"{tok.text} [原形: {tok.lemma_}]" if tok.text != tok.lemma_ else tok.text for tok in clean_tokens]
-            display_text = " ".join(display)
-            st.write(f"{idx+1} >>> {display_text}")     
-            
+            sentence = wordnet_nlp(sent.text)
+            enriched_sentence = []
+            for tok in sentence:
+                synsets = tok._.wordnet.wordnet_synsets_for_domain(wordnet_domains)
+                if not synsets:
+                    enriched_sentence.append(tok.text)
+                else:
+                    lemmas_for_synset = [lemma for s in synsets for lemma in s.lemma_names()]
+                    enriched_sentence.append('({})'.format('|'.join(set(lemmas_for_synset))))
+            display_text = ' '.join(enriched_sentence)
+            st.write(f"{idx+1} >>> {display_text}")          
+
         st.markdown("## 詞形變化")
         # Collect inflected forms
         inflected_forms = [tok for tok in doc if tok.text != tok.lemma_]
