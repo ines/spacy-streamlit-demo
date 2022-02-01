@@ -1,6 +1,7 @@
 from dragonmapper import hanzi, transcriptions
 import jieba
 import pandas as pd
+import re
 import requests 
 import spacy
 from spacy_streamlit import visualize_ner, visualize_tokens
@@ -13,13 +14,16 @@ MODELS = {"中文": "zh_core_web_sm",
           "English": "en_core_web_sm", 
           "日本語": "ja_ginza"}
 models_to_display = list(MODELS.keys())
-ZH_TEXT = "（中央社）中央流行疫情指揮中心宣布，今天國內新增60例COVID-19（2019冠狀病毒疾病），分別為49例境外移入，11例本土病例，是去年8月29日本土新增13例以來的新高，初步研判其中10例個案皆與桃園機場疫情有關。"
-ZH_REGEX = "\d{2,4}"
-EN_TEXT = "(CNN) Covid-19 hospitalization rates among children are soaring in the United States, with an average of 4.3 children under 5 per 100,000 hospitalized with an infection as of the week ending January 1, up from 2.6 children the previous week, according to data from the US Centers for Disease Control and Prevention. This represents a 48% increase from the week ending December 4, and the largest increase in hospitalization rate this age group has seen over the course of the pandemic."
+ZH_TEXT = """（中央社）迎接虎年到來，台北101今天表示，即日起推出「虎年新春燈光秀」，將持續至2月5日，每晚6時至10時，除整點會有報時燈光變化外，每15分鐘還會有3分鐘的燈光秀。台北101下午透過新聞稿表示，今年特別設計「虎年新春燈光秀」，從今晚開始閃耀台北天際線，一直延續至2月5日，共7天。"""
+ZH_REGEX = "\d{2,4}[\u4E00-\u9FFF]+"
+EN_TEXT = """(CNN) Not all Lunar New Year foods are created equal. Some only make a brief appearance at the festival for auspicious purposes. Others are so delicious they grace dim sum tables around the world all year.
+Turnip cake -- called "loh bak goh" in Cantonese -- falls into the latter category.
+Chef Tsang Chiu King, culinary director of Ming Court in Hong Kong's Wan Chai area, has his own theory on why turnip cake is such a popular Lunar New Year dish, especially in southern China.
+"Compared to other Lunar New Year cakes, turnip cake is popular as it's one of the few savory new year puddings. Together with the freshness of the white radish, it can be quite addictive as a snack or a main dish," he says."""
 EN_REGEX = "(ed|ing)$"
-JA_TEXT = "（朝日新聞）新型コロナウイルスの国内感染者は9日、新たに8249人が確認された。2日連続で8千人を超えたのは昨年9月11日以来、約4カ月ぶり。全国的に感染拡大が進む中、年をまたいだ1週間の感染者の過半数が30代以下だった。コロナ特措法に基づく「まん延防止等重点措置」が9日から適用された3県では、広島で過去最多の619人が確認された。"
+JA_TEXT = """（朝日新聞）寅（とら）年の2022年を前に、90種480匹の野生動物を飼育する「到津（いとうづ）の森公園」（北九州市）が盛り上がっている。同園のマスコットはアムールトラのミライ（雌、10歳）。22年は「ニャーニャー」の年としてネコ好きの間で話題となっており、「干支（えと）で唯一のネコ科のトラ人気につながれば」と期待している。"""
 JA_REGEX = "[たい]$"
-DESCRIPTION = "spaCy自然語言處理輔助語言學習"
+DESCRIPTION = "AI模型輔助語言學習"
 TOK_SEP = " | "
 
 # Custom tokenizer class
@@ -36,22 +40,28 @@ class JiebaTokenizer:
     
 # Utility functions
 def create_jap_df(tokens):
-          df = pd.DataFrame(
-              {
-                  "單詞": [tok.orth_ for tok in tokens],
-                  "發音": ["/".join(tok.morph.get("Reading")) for tok in tokens],
-                  "詞形變化": ["/".join(tok.morph.get("Inflection")) for tok in tokens],
-                  "原形": [tok.lemma_ for tok in tokens],
-                  #"正規形": [tok.norm_ for tok in verbs],
-              }
-          )
-          st.dataframe(df)
-          csv = df.to_csv().encode('utf-8')
-          st.download_button(
-              label="下載表格",
-              data=csv,
-              file_name='jap_forms.csv',
-              )
+    seen_texts = []
+    filtered_tokens = []
+    for tok in tokens:
+        if tok.text not in seen_texts:
+            filtered_tokens.append(tok)
+            
+    df = pd.DataFrame(
+      {
+          "單詞": [tok.orth_ for tok in filtered_tokens],
+          "發音": ["/".join(tok.morph.get("Reading")) for tok in filtered_tokens],
+          "詞形變化": ["/".join(tok.morph.get("Inflection")) for tok in filtered_tokens],
+          "原形": [tok.lemma_ for tok in filtered_tokens],
+          #"正規形": [tok.norm_ for tok in verbs],
+      }
+    )
+    st.dataframe(df)
+    csv = df.to_csv().encode('utf-8')
+    st.download_button(
+      label="下載表格",
+      data=csv,
+      file_name='jap_forms.csv',
+      )
 
 def filter_tokens(doc):
     clean_tokens = [tok for tok in doc if tok.pos_ not in ["PUNCT", "SYM"]]
@@ -103,7 +113,7 @@ elif selected_model == models_to_display[2]: # Japanese
     default_text = JA_TEXT
     default_regex = JA_REGEX 
 
-st.info("修改文本後按下Ctrl + Enter更新")
+st.info("修改文本後，按下Ctrl + Enter以更新")
 text = st.text_area("",  default_text)
 doc = nlp(text)
 st.markdown("---")
@@ -134,7 +144,8 @@ with right:
         
         st.markdown("## 單詞解釋")
         clean_tokens = filter_tokens(doc)
-        clean_tokens_text = [tok.text for tok in clean_tokens if not tok.is_ascii]
+        alphanum_pattern = re.compile(r"[a-zA-Z0-9]")
+        clean_tokens_text = [tok.text for tok in clean_tokens if not alphanum_pattern.search(tok.text)]
         vocab = list(set(clean_tokens_text))
         if vocab:
             selected_words = st.multiselect("請選擇要查詢的單詞: ", vocab, vocab[0:3])
@@ -151,18 +162,11 @@ with right:
             display_text = TOK_SEP.join(display)
             st.write(f"{idx+1} >>> {display_text}")          
         
-        # tag_ seems to be more accurate than pos_
-        verbs = [tok for tok in doc if tok.tag_.startswith("動詞")]
-        verbs = list(set(verbs))
-        if verbs:
-            st.markdown("## 動詞")
-            create_jap_df(verbs)
-          
-        adjs = [tok for tok in doc if tok.pos_ == "ADJ"]
-        adjs = list(set(adjs))
-        if adjs:
-            st.markdown("## 形容詞")
-            create_jap_df(adjs)
+        st.markdown("## 詞形變化")
+        # Collect inflected forms
+        inflected_forms = [tok for tok in doc if tok.tag_.startswith("動詞") or tok.tag_.startswith("形")]
+        if inflected_forms:
+            create_jap_df(inflected_forms)
 
     else:
         st.write("Work in progress")
