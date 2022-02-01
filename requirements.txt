@@ -6,12 +6,14 @@ spacy>=3.2.0,<3.3.0
 spacy-streamlit>=1.0.0rc1,<1.1.0
 
 # sapCy models
-# https://github.com/explosion/spacy-models/releases/download/zh_core_web_sm-3.2.0/zh_core_web_sm-3.2.0-py3-none-any.whl#egg=zh_core_web_sm==3.2.0
 https://github.com/explosion/spacy-models/releases/download/zh_core_web_sm-3.2.0/zh_core_web_sm-3.2.0.tar.gz#egg=zh_core_web_sm
 https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.2.0/en_core_web_sm-3.2.0.tar.gz#egg=en_core_web_sm
-# https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.2.0/en_core_web_sm-3.2.0-py3-none-any.whll#egg=en_core_web_sm==3.2.0
+
 # conversion between hanzi and transcriptions 
 dragonmapper
 
 # an online Japanese dictionary
 jisho_api
+
+# Wordnet for English, Spanish, and Portuguese
+spacy-wordnet
