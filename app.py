@@ -4,6 +4,7 @@ import pandas as pd
 import requests 
 import spacy
 from spacy_streamlit import visualize_ner, visualize_tokens
+#from spacy.language import Language
 from spacy.tokens import Doc
 import streamlit as st
 
@@ -18,7 +19,7 @@ EN_TEXT = "(CNN) Covid-19 hospitalization rates among children are soaring in th
 EN_REGEX = "(ed|ing)$"
 JA_TEXT = "（朝日新聞）新型コロナウイルスの国内感染者は9日、新たに8249人が確認された。2日連続で8千人を超えたのは昨年9月11日以来、約4カ月ぶり。全国的に感染拡大が進む中、年をまたいだ1週間の感染者の過半数が30代以下だった。コロナ特措法に基づく「まん延防止等重点措置」が9日から適用された3県では、広島で過去最多の619人が確認された。"
 JA_REGEX = "[たい]$"
-DESCRIPTION = "spaCy自然語言處理模型展示"
+DESCRIPTION = "spaCy自然語言處理輔助語言學習"
 TOK_SEP = " | "
 
 # Custom tokenizer class
@@ -32,7 +33,7 @@ class JiebaTokenizer:
         spaces = [False] * len(tokens)
         doc = Doc(self.vocab, words=tokens, spaces=spaces)
         return doc
-
+    
 # Utility functions
 def create_jap_df(tokens):
           df = pd.DataFrame(
@@ -52,12 +53,21 @@ def create_jap_df(tokens):
               file_name='jap_forms.csv',
               )
 
+def filter_tokens(doc):
+    clean_tokens = [tok for tok in doc if tok.pos_ not in ["PUNCT", "SYM"]]
+    clean_tokens = [tok for tok in clean_tokens if not tok.like_email]
+    clean_tokens = [tok for tok in clean_tokens if not tok.like_url]
+    clean_tokens = [tok for tok in clean_tokens if not tok.like_num]
+    clean_tokens = [tok for tok in clean_tokens if not tok.is_punct]
+    clean_tokens = [tok for tok in clean_tokens if not tok.is_space]
+    return clean_tokens
+            
 def moedict_caller(word):
     st.write(f"### {word}")
-    res = requests.get(f"https://www.moedict.tw/a/{word}.json")
-    if res:
-        with st.expander("點擊 + 查看更多"):
-            st.json(res.json())
+    req = requests.get(f"https://www.moedict.tw/a/{word}.json")
+    if req:
+        with st.expander("點擊 + 檢視結果"):
+            st.json(req.json())
     else:
         st.write("查無結果")
           
@@ -93,6 +103,7 @@ elif selected_model == models_to_display[2]: # Japanese
     default_text = JA_TEXT
     default_regex = JA_REGEX 
 
+st.info("修改文本後按下Ctrl + Enter更新")
 text = st.text_area("",  default_text)
 doc = nlp(text)
 st.markdown("---")
@@ -113,7 +124,7 @@ with right:
         st.markdown("## 分析後文本") 
         for idx, sent in enumerate(doc.sents):
             tokens_text = [tok.text for tok in sent if tok.pos_ not in punct_and_sym]
-            pinyins = [hanzi.to_pinyin(tok) for tok in tokens_text]
+            pinyins = [hanzi.to_pinyin(word) for word in tokens_text]
             display = []
             for text, pinyin in zip(tokens_text, pinyins):
                 res = f"{text} [{pinyin}]"
@@ -122,7 +133,8 @@ with right:
             st.write(f"{idx+1} >>> {display_text}")
         
         st.markdown("## 單詞解釋")
-        clean_tokens_text = [tok.text for tok in doc if tok.pos_ not in punct_and_sym]
+        clean_tokens = filter_tokens(doc)
+        clean_tokens_text = [tok.text for tok in clean_tokens if not tok.is_ascii]
         vocab = list(set(clean_tokens_text))
         if vocab:
             selected_words = st.multiselect("請選擇要查詢的單詞: ", vocab, vocab[0:3])
@@ -132,7 +144,7 @@ with right:
     elif selected_model == models_to_display[2]: # Japanese 
         st.markdown("## 分析後文本") 
         for idx, sent in enumerate(doc.sents):
-            clean_tokens = [tok for tok in sent if tok.pos_ not in punct_and_sym]
+            clean_tokens = [tok for tok in sent if tok.pos_ not in ["PUNCT", "SYM"]]
             tokens_text = [tok.text for tok in clean_tokens]
             readings = ["/".join(tok.morph.get("Reading")) for tok in clean_tokens]
             display = [f"{text} [{reading}]" for text, reading in zip(tokens_text, readings)]
