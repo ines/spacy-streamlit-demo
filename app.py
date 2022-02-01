@@ -63,6 +63,28 @@ def create_jap_df(tokens):
       file_name='jap_forms.csv',
       )
 
+def create_eng_df(tokens):
+    seen_texts = []
+    filtered_tokens = []
+    for tok in tokens:
+        if tok.lemma_ not in seen_texts:
+            filtered_tokens.append(tok)
+            
+    df = pd.DataFrame(
+      {
+          "單詞": [tok.orth_ for tok in filtered_tokens],
+          "詞類": [tok.pos_ for tok in filtered_tokens],
+          "原形": [tok.lemma_ for tok in filtered_tokens],
+      }
+    )
+    st.dataframe(df)
+    csv = df.to_csv().encode('utf-8')
+    st.download_button(
+      label="下載表格",
+      data=csv,
+      file_name='eng_forms.csv',
+      )
+          
 def filter_tokens(doc):
     clean_tokens = [tok for tok in doc if tok.pos_ not in ["PUNCT", "SYM"]]
     clean_tokens = [tok for tok in clean_tokens if not tok.like_email]
@@ -101,7 +123,7 @@ st.markdown("---")
 st.markdown("## 待分析文本") 
 if selected_model == models_to_display[0]: # Chinese
     # Select a tokenizer if the Chinese model is chosen
-    selected_tokenizer = st.radio("請選擇斷詞模型", ["spaCy", "jieba-TW"])
+    selected_tokenizer = st.radio("請選擇斷詞模型", ["jieba-TW", "spaCy"])
     if selected_tokenizer == "jieba-TW":
         nlp.tokenizer = JiebaTokenizer(nlp.vocab)
     default_text = ZH_TEXT
@@ -169,4 +191,15 @@ with right:
             create_jap_df(inflected_forms)
 
     else:
-        st.write("Work in progress")
+        st.markdown("## 分析後文本") 
+        for idx, sent in enumerate(doc.sents):
+            clean_tokens = [tok for tok in sent if tok.pos_ not in ["PUNCT", "SYM"]]
+            display = [f"{tok.text} [原形: {tok.lemma_}]" if tok.pos_ in ["VERB", "NOUN", "ADJ"] else tok.text for tok in clean_tokens]
+            display_text = " ".join(display)
+            st.write(f"{idx+1} >>> {display_text}")     
+            
+        st.markdown("## 詞形變化")
+        # Collect inflected forms
+        inflected_forms = [tok for tok in doc if tok.pos_ in ["VERB", "NOUN", "ADJ"]]
+        if inflected_forms:
+            create_eng_df(inflected_forms)
