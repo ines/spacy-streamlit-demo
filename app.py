@@ -140,7 +140,7 @@ elif selected_model == models_to_display[2]: # Japanese
     default_regex = JA_REGEX 
 
 st.info("修改文本後，按下Ctrl + Enter以更新")
-text = st.text_area("",  default_text)
+text = st.text_area("",  default_text, height=600)
 doc = nlp(text)
 st.markdown("---")
 
