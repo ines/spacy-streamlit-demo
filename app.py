@@ -198,7 +198,7 @@ with right:
         
         st.markdown("## 關鍵詞") 
         for keyword, score in doc._.extract_keywords(n=3):
-            print(keyword, "-", score)
+            st.write(keyword, "-", score)
         
         st.markdown("## 分析後文本") 
         for idx, sent in enumerate(doc.sents):
