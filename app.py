@@ -1,5 +1,7 @@
 from dragonmapper import hanzi, transcriptions
 import jieba
+from jisho_api.word import Word
+from jisho_api.sentence import Sentence
 import pandas as pd
 import re
 import requests 
@@ -27,6 +29,33 @@ JA_TEXT = """（朝日新聞）台湾気分のパワースポット ＪＲ大久
 JA_REGEX = "[たい]$"
 DESCRIPTION = "AI模型輔助語言學習"
 TOK_SEP = " | "
+
+# External API callers
+def moedict_caller(word):
+    st.write(f"### {word}")
+    req = requests.get(f"https://www.moedict.tw/a/{word}.json")
+    if req:
+        with st.expander("點擊 + 檢視結果"):
+            st.json(req.json())
+    else:
+        st.write("查無結果")
+        
+def jisho_caller(word, res_type="senses"):
+    if res_type=="senses":
+        res = Word.request(word)
+    elif res_type=="sentences":
+        res = Sentence.request(word)
+    response = res.dict()
+    if response["meta"]["status"] == 200:
+        return response["data"]
+    else:
+        raise Exception("Can't get response from Jisho!")
+
+def parse_jisho_senses(data):
+    pass
+
+def parse_jisho_sentences(data):
+    pass
 
 # Custom tokenizer class
 class JiebaTokenizer:
@@ -95,15 +124,6 @@ def filter_tokens(doc):
     clean_tokens = [tok for tok in clean_tokens if not tok.is_punct]
     clean_tokens = [tok for tok in clean_tokens if not tok.is_space]
     return clean_tokens
-            
-def moedict_caller(word):
-    st.write(f"### {word}")
-    req = requests.get(f"https://www.moedict.tw/a/{word}.json")
-    if req:
-        with st.expander("點擊 + 檢視結果"):
-            st.json(req.json())
-    else:
-        st.write("查無結果")
           
 # Page setting
 st.set_page_config(
@@ -191,7 +211,7 @@ with right:
               st.write(f"{idx+1} >>> {display_text}")
             else:
               st.write(f"{idx+1} >>> EMPTY LINE")  
-        
+                        
         st.markdown("## 詞形變化")
         # Collect inflected forms
         inflected_forms = [tok for tok in doc if tok.tag_.startswith("動詞") or tok.tag_.startswith("形")]
