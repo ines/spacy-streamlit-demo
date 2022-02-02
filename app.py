@@ -201,7 +201,8 @@ with right:
         kws2scores = {keyword: score for keyword, score in doc._.extract_keywords(n=kw_num)}
         kws2scores = sorted(kws2scores.items(), key=lambda x: x[1], reverse=True)
         for keyword, score in kws2scores: 
-            st.write(f"詞語: {keyword} >>> YAKE分數: {score}")
+            rounded_score = round(score, 3)
+            st.write(f"詞語: {keyword} | YAKE分數: {rounded_score}")
         
         st.markdown("## 分析後文本") 
         for idx, sent in enumerate(doc.sents):
