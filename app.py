@@ -197,8 +197,11 @@ with right:
         doc = nlp(text)
         
         st.markdown("## 關鍵詞") 
-        for keyword, score in doc._.extract_keywords(n=3):
-            st.write(keyword, "-", score)
+        kw_num = st.slider("請選擇關鍵詞數量", 1, 10, 3)
+        kws2scores = {keyword: score for keyword, score in doc._.extract_keywords(n=kw_num)}
+        kws2scores = sorted(kws2scores.items(), key=lambda x: x[1], reverse=True)
+        for keyword, score in kws2scores: 
+            st.write(f"詞語: {keyword} >>> YAKE分數: {score}")
         
         st.markdown("## 分析後文本") 
         for idx, sent in enumerate(doc.sents):
