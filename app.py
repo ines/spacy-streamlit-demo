@@ -163,9 +163,12 @@ with right:
             for text, pinyin in zip(tokens_text, pinyins):
                 res = f"{text} [{pinyin}]"
                 display.append(res)
-            display_text = TOK_SEP.join(display)
-            st.write(f"{idx+1} >>> {display_text}")
-        
+            if display:
+              display_text = TOK_SEP.join(display)
+              st.write(f"{idx+1} >>> {display_text}")
+            else:
+              st.write(f"{idx+1} >>> EMPTY LINE")
+
         st.markdown("## 單詞解釋")
         clean_tokens = filter_tokens(doc)
         alphanum_pattern = re.compile(r"[a-zA-Z0-9]")
@@ -183,8 +186,11 @@ with right:
             tokens_text = [tok.text for tok in clean_tokens]
             readings = ["/".join(tok.morph.get("Reading")) for tok in clean_tokens]
             display = [f"{text} [{reading}]" for text, reading in zip(tokens_text, readings)]
-            display_text = TOK_SEP.join(display)
-            st.write(f"{idx+1} >>> {display_text}")          
+            if display:
+              display_text = TOK_SEP.join(display)
+              st.write(f"{idx+1} >>> {display_text}")
+            else:
+              st.write(f"{idx+1} >>> EMPTY LINE")  
         
         st.markdown("## 詞形變化")
         # Collect inflected forms
