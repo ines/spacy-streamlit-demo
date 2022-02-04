@@ -24,8 +24,7 @@ Turnip cake -- called "loh bak goh" in Cantonese -- falls into the latter catego
 Chef Tsang Chiu King, culinary director of Ming Court in Hong Kong's Wan Chai area, has his own theory on why turnip cake is such a popular Lunar New Year dish, especially in southern China.
 "Compared to other Lunar New Year cakes, turnip cake is popular as it's one of the few savory new year puddings. Together with the freshness of the white radish, it can be quite addictive as a snack or a main dish," he says."""
 EN_REGEX = "(ed|ing)$"
-JA_TEXT = """（朝日新聞）台湾気分のパワースポット ＪＲ大久保駅南口のすぐそばにある「東京媽祖廟（まそびょう）」は、台湾で広く信仰されている道教の神様を祭る。居酒屋やコンビニが並ぶ通りで、金色の竜など豪華な装飾が施された４階建ての赤い建物はとても目立つ。
-"""
+JA_TEXT = """（朝日新聞）台湾気分のパワースポット ＪＲ大久保駅南口のすぐそばにある「東京媽祖廟（まそびょう）」は、台湾で広く信仰されている道教の神様を祭る。居酒屋やコンビニが並ぶ通りで、金色の竜など豪華な装飾が施された４階建ての赤い建物はとても目立つ。"""
 JA_REGEX = "[たい]$"
 DESCRIPTION = "AI模型輔助語言學習"
 TOK_SEP = " | "
@@ -39,17 +38,6 @@ def moedict_caller(word):
             st.json(req.json())
     else:
         st.write("查無結果")
-        
-def jisho_caller(word, res_type="senses"):
-    if res_type=="senses":
-        res = Word.request(word)
-    elif res_type=="sentences":
-        res = Sentence.request(word)
-    response = res.dict()
-    if response["meta"]["status"] == 200:
-        return response["data"]
-    else:
-        raise Exception("Can't get response from Jisho!")
 
 def parse_jisho_senses(word):
     res = Word.request(word)
