@@ -253,7 +253,7 @@ with right:
             for w in selected_words:
                 with st.expander("點擊 + 檢視結果"):
                     parse_jisho_senses(w)
-                    parse_jisho_sentences(w)
+                    #parse_jisho_sentences(w)
 
         st.markdown("## 詞形變化")
         # Collect inflected forms
