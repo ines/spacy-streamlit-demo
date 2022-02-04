@@ -251,10 +251,10 @@ with right:
         if vocab:
             selected_words = st.multiselect("請選擇要查詢的單詞: ", vocab, vocab[0:3])
             for w in selected_words:
-                st.write(w)
+                st.write(f"### {w}")
                 with st.expander("點擊 + 檢視結果"):
                     parse_jisho_senses(w)
-                    #parse_jisho_sentences(w)
+                    parse_jisho_sentences(w)
 
         st.markdown("## 詞形變化")
         # Collect inflected forms
