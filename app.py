@@ -51,12 +51,43 @@ def jisho_caller(word, res_type="senses"):
     else:
         raise Exception("Can't get response from Jisho!")
 
-def parse_jisho_senses(data):
-    pass
+def parse_jisho_senses(word):
+    res = Word.request(word)
+    response = res.dict()
+    if response["meta"]["status"] == 200:
+        data = response["data"]
+        commons = [d for d in data if d["is_common"]]
+        if commons:
+            common = commons[0] # Only get the first entry that is common
+            senses = common["senses"]
+            if len(senses) > 3:
+                senses = senses[:3]
+            with st.container():
+                for idx, sense in enumerate(senses):
+                    eng_def = "; ".join(sense["english_definitions"])
+                    pos = "/".join(sense["parts_of_speech"])
+                    st.write(f"Sense {idx+1}: {eng_def} ({pos})")
+    else:
+        st.error("Can't get response from Jisho!")
 
-def parse_jisho_sentences(data):
-    pass
-
+def parse_jisho_sentences(word):
+    res = Sentence.request(word)
+    response = res.dict()
+    if response["meta"]["status"] == 200:
+        data = response["data"]
+        if len(data) > 3:
+            sents = data[:3]
+        else:
+            sents = data
+        with st.container():
+            for idx, sent in enumerate(sents):
+                eng = sent["en_translation"]
+                jap = sent["japanese"]
+                st.write(f"Sentence {idx+1}: {jap}")
+                st.write(f"({eng})")
+    else:
+        st.error("Can't get response from Jisho!")
+        
 # Custom tokenizer class
 class JiebaTokenizer:
     def __init__(self, vocab):
@@ -211,7 +242,19 @@ with right:
               st.write(f"{idx+1} >>> {display_text}")
             else:
               st.write(f"{idx+1} >>> EMPTY LINE")  
-                        
+          
+        st.markdown("## 單詞解釋與例句")
+        clean_tokens = filter_tokens(doc)
+        alphanum_pattern = re.compile(r"[a-zA-Z0-9]")
+        clean_tokens_text = [tok.text for tok in clean_tokens if not alphanum_pattern.search(tok.text)]
+        vocab = list(set(clean_tokens_text))
+        if vocab:
+            selected_words = st.multiselect("請選擇要查詢的單詞: ", vocab, vocab[0:3])
+            for w in selected_words:
+                with st.expander("點擊 + 檢視結果"):
+                    parse_jisho_senses(w)
+                    parse_jisho_sentences(w)
+
         st.markdown("## 詞形變化")
         # Collect inflected forms
         inflected_forms = [tok for tok in doc if tok.tag_.startswith("動詞") or tok.tag_.startswith("形")]
