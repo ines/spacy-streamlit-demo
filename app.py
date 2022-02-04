@@ -67,13 +67,16 @@ def parse_jisho_senses(word):
                     eng_def = "; ".join(sense["english_definitions"])
                     pos = "/".join(sense["parts_of_speech"])
                     st.write(f"Sense {idx+1}: {eng_def} ({pos})")
+        else:
+            st.info("Found no common words on Jisho!")
     else:
         st.error("Can't get response from Jisho!")
 
+
 def parse_jisho_sentences(word):
     res = Sentence.request(word)
-    response = res.dict()
-    if response["meta"]["status"] == 200:
+    try:
+        response = res.dict()
         data = response["data"]
         if len(data) > 3:
             sents = data[:3]
@@ -85,9 +88,9 @@ def parse_jisho_sentences(word):
                 jap = sent["japanese"]
                 st.write(f"Sentence {idx+1}: {jap}")
                 st.write(f"({eng})")
-    else:
-        st.error("Can't get response from Jisho!")
-        
+    except:
+        st.info("Found no results on Jisho!")
+            
 # Custom tokenizer class
 class JiebaTokenizer:
     def __init__(self, vocab):
