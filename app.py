@@ -246,11 +246,12 @@ with right:
         st.markdown("## 單詞解釋與例句")
         clean_tokens = filter_tokens(doc)
         alphanum_pattern = re.compile(r"[a-zA-Z0-9]")
-        clean_tokens_text = [tok.text for tok in clean_tokens if not alphanum_pattern.search(tok.text)]
-        vocab = list(set(clean_tokens_text))
+        clean_lemmas = [tok.lemma_ for tok in clean_tokens if not alphanum_pattern.search(tok.lemma_)]
+        vocab = list(set(clean_lemmas))
         if vocab:
             selected_words = st.multiselect("請選擇要查詢的單詞: ", vocab, vocab[0:3])
             for w in selected_words:
+                st.write(w)
                 with st.expander("點擊 + 檢視結果"):
                     parse_jisho_senses(w)
                     #parse_jisho_sentences(w)
